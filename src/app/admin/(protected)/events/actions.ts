@@ -68,6 +68,22 @@ export async function createEvent(
     return { error: "请完整填写所有必填项" };
   }
 
+  const regStart = new Date(registrationStart);
+  const regEnd = new Date(registrationEnd);
+  const eventDt = new Date(eventDate);
+
+  if (isNaN(regStart.getTime()) || isNaN(regEnd.getTime()) || isNaN(eventDt.getTime())) {
+    return { error: "日期格式不正确" };
+  }
+
+  if (regEnd <= regStart) {
+    return { error: "报名截止时间必须晚于报名开始时间" };
+  }
+
+  if (eventDt < regEnd) {
+    return { error: "赛事日期不能早于报名截止时间" };
+  }
+
   const schedules = parseSchedules(schedulesRaw);
   if (!schedules) {
     return { error: "请至少添加一个赛程，且每个赛程至少包含一个组别" };
@@ -83,9 +99,9 @@ export async function createEvent(
         description,
         city,
         location,
-        registrationStart: new Date(registrationStart),
-        registrationEnd: new Date(registrationEnd),
-        eventDate: new Date(eventDate),
+        registrationStart: regStart,
+        registrationEnd: regEnd,
+        eventDate: eventDt,
         status,
       },
     });
@@ -137,6 +153,22 @@ export async function updateEvent(
     return { error: "请完整填写所有必填项" };
   }
 
+  const regStart = new Date(registrationStart);
+  const regEnd = new Date(registrationEnd);
+  const eventDt = new Date(eventDate);
+
+  if (isNaN(regStart.getTime()) || isNaN(regEnd.getTime()) || isNaN(eventDt.getTime())) {
+    return { error: "日期格式不正确" };
+  }
+
+  if (regEnd <= regStart) {
+    return { error: "报名截止时间必须晚于报名开始时间" };
+  }
+
+  if (eventDt < regEnd) {
+    return { error: "赛事日期不能早于报名截止时间" };
+  }
+
   await prisma.event.update({
     where: { id: eventId },
     data: {
@@ -144,9 +176,9 @@ export async function updateEvent(
       description,
       city,
       location,
-      registrationStart: new Date(registrationStart),
-      registrationEnd: new Date(registrationEnd),
-      eventDate: new Date(eventDate),
+      registrationStart: regStart,
+      registrationEnd: regEnd,
+      eventDate: eventDt,
       status,
     },
   });
