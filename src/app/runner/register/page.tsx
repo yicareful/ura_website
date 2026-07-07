@@ -74,7 +74,7 @@ export default function RegisterPage() {
           <div className="form-row">
             <div className="form-group">
               <label className="form-label" htmlFor="idCard">身份证号 *</label>
-              <input className="form-input" id="idCard" name="idCard" required maxLength={18} pattern="[0-9A-Za-z]+" title="身份证号只能包含数字和英文字母" />
+              <input className="form-input" id="idCard" name="idCard" required maxLength={18} pattern="\d{17}[\dXx]" title="身份证号应为18位，前17位为数字，最后一位为数字或字母X" />
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="phone">手机号 *</label>

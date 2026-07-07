@@ -29,8 +29,8 @@ export async function registerAction(
     return { error: "请完整填写所有必填项" };
   }
 
-  if (!/^\d{15}(\d{2}[0-9Xx])?$/.test(idCard)) {
-    return { error: "身份证号格式不正确" };
+  if (!/^\d{17}[\dXx]$/.test(idCard)) {
+    return { error: "身份证号应为18位，前17位为数字，最后一位为数字或字母X" };
   }
 
   if (!/^1\d{10}$/.test(phone)) {
