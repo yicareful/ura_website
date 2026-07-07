@@ -30,7 +30,7 @@ export async function registerAction(
   }
 
   if (!/^\d{17}[\dXx]$/.test(idCard)) {
-    return { error: "身份证号应为18位，前17位为数字，最后一位为数字或字母X" };
+    return { error: "身份证号格式不正确" };
   }
 
   if (!/^1\d{10}$/.test(phone)) {

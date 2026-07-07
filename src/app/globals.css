@@ -462,3 +462,8 @@ tr:hover td {
   font-size: var(--text-sm);
   margin-top: var(--space-1);
 }
+
+.header-runner-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 91, 46, 0.5);
+}

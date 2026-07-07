@@ -66,7 +66,9 @@ export async function SiteHeader({
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)" }}>
           {runner ? (
             <>
-              <span
+              <Link
+                href="/runner/profile"
+                className="header-runner-badge"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "var(--text-xs)",
@@ -77,10 +79,12 @@ export async function SiteHeader({
                   color: "#fff",
                   letterSpacing: "0.02em",
                   boxShadow: "0 0 12px rgba(255,91,46,0.3)",
+                  transition: "transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-smooth)",
+                  display: "inline-block",
                 }}
               >
                 {runner.school} · {runner.name}
-              </span>
+              </Link>
               <form action={logoutAction} style={{ display: "inline" }}>
                 <button
                   type="submit"
