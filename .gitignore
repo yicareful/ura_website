@@ -1,0 +1,28 @@
+# Claude
+.claude/
+
+# References
+references/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+
+# Environment
+.env
+.env*.local
+
+# Database
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal
+
+# TypeScript
+next-env.d.ts
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
