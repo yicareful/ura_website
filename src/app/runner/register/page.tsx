@@ -21,8 +21,26 @@ export default function RegisterPage() {
         justifyContent: "center",
         background: "var(--color-light-base)",
         padding: "var(--space-6)",
+        position: "relative",
       }}
     >
+      <Link
+        href="/"
+        style={{
+          position: "absolute",
+          top: "var(--space-6)",
+          left: "var(--space-6)",
+          fontFamily: "var(--font-display)",
+          fontWeight: 600,
+          fontSize: "var(--text-sm)",
+          color: "var(--color-text-secondary)",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "var(--space-1)",
+        }}
+      >
+        ← 回到首页
+      </Link>
       <div className="card" style={{ padding: "var(--space-10)", width: 480, maxWidth: "100%" }}>
         <h1 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-1)" }}>创建账号</h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-8)" }}>
@@ -56,11 +74,11 @@ export default function RegisterPage() {
           <div className="form-row">
             <div className="form-group">
               <label className="form-label" htmlFor="idCard">身份证号 *</label>
-              <input className="form-input" id="idCard" name="idCard" required maxLength={18} />
+              <input className="form-input" id="idCard" name="idCard" required maxLength={18} pattern="[0-9A-Za-z]+" title="身份证号只能包含数字和英文字母" />
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="phone">手机号 *</label>
-              <input className="form-input" id="phone" name="phone" required maxLength={11} />
+              <input className="form-input" id="phone" name="phone" required maxLength={11} pattern="[0-9]+" inputMode="numeric" title="手机号只能包含数字" />
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
 import { adminLogin, type LoginState } from "./actions";
 
 const initialState: LoginState = {};
@@ -16,8 +17,26 @@ export default function AdminLoginPage() {
         alignItems: "center",
         justifyContent: "center",
         background: "var(--color-light-base)",
+        position: "relative",
       }}
     >
+      <Link
+        href="/"
+        style={{
+          position: "absolute",
+          top: "var(--space-6)",
+          left: "var(--space-6)",
+          fontFamily: "var(--font-display)",
+          fontWeight: 600,
+          fontSize: "var(--text-sm)",
+          color: "var(--color-text-secondary)",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "var(--space-1)",
+        }}
+      >
+        ← 回到首页
+      </Link>
       <div className="card" style={{ padding: "var(--space-10)", width: 380 }}>
         <h1 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-1)" }}>管理后台</h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-8)" }}>

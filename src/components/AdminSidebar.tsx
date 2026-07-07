@@ -21,19 +21,22 @@ export function AdminSidebar() {
       }}
     >
       <Link
-        href="/admin"
+        href="/"
         style={{
           fontFamily: "var(--font-display)",
-          fontWeight: 700,
-          fontSize: "var(--text-lg)",
-          marginBottom: "var(--space-1)",
-          display: "block",
+          fontWeight: 600,
+          fontSize: "var(--text-sm)",
+          color: "var(--color-text-on-dark-muted)",
+          marginBottom: "var(--space-6)",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "var(--space-1)",
         }}
       >
-        URA 管理后台
+        ← 回到首页
       </Link>
       <p style={{ fontSize: "var(--text-xs)", color: "var(--color-text-on-dark-muted)", marginBottom: "var(--space-8)" }}>
-        简易验证 · 非生产级安全
+        管理后台 · 简易验证
       </p>
 
       <nav style={{ display: "flex", flexDirection: "column", gap: "var(--space-1)", flex: 1 }}>

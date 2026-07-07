@@ -4,7 +4,7 @@ import { LookupForm } from "./LookupForm";
 export default async function LookupPage() {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader showBackHome />
       <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
         <div className="container" style={{ maxWidth: 640 }}>
           <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>查询我的报名</h1>

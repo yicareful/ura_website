@@ -7,7 +7,7 @@ export default async function EventsPage() {
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader showBackHome />
       <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
         <div className="container">
           <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-3)" }}>全部赛事</h1>

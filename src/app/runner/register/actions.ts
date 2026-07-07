@@ -37,6 +37,10 @@ export async function registerAction(
     return { error: "手机号格式不正确" };
   }
 
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { error: "邮箱格式不正确" };
+  }
+
   if (password.length < 6) {
     return { error: "密码长度不能少于6位" };
   }

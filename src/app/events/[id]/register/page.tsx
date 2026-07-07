@@ -36,7 +36,7 @@ export default async function RegisterPage({
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader showBackHome />
       <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
         <div className="container" style={{ maxWidth: 640 }}>
           <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>报名 · {event.title}</h1>

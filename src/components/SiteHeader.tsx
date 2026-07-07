@@ -2,7 +2,13 @@ import Link from "next/link";
 import { getCurrentRunner } from "@/lib/runner-auth";
 import { logoutAction } from "@/app/runner/login/actions";
 
-export async function SiteHeader({ dark = false }: { dark?: boolean }) {
+export async function SiteHeader({
+  dark = false,
+  showBackHome = false,
+}: {
+  dark?: boolean;
+  showBackHome?: boolean;
+}) {
   const runner = await getCurrentRunner();
 
   return (
@@ -24,17 +30,34 @@ export async function SiteHeader({ dark = false }: { dark?: boolean }) {
         className="container"
         style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
       >
-        <Link
-          href="/"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 700,
-            fontSize: "var(--text-xl)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          URA
-        </Link>
+        {showBackHome ? (
+          <Link
+            href="/"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 600,
+              fontSize: "var(--text-sm)",
+              color: "var(--color-text-secondary)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "var(--space-1)",
+            }}
+          >
+            ← 回到首页
+          </Link>
+        ) : (
+          <Link
+            href="/"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontSize: "var(--text-xl)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            URA
+          </Link>
+        )}
         <nav style={{ display: "flex", gap: "var(--space-8)", fontSize: "var(--text-sm)", fontWeight: 500, alignItems: "center" }}>
           <Link href="/events">赛事</Link>
           <Link href="/runner/my-registrations">我的报名</Link>

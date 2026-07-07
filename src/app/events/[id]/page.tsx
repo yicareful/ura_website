@@ -19,7 +19,7 @@ export default async function EventDetailPage({
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader showBackHome />
       <section
         className="section-dark"
         style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-16)" }}

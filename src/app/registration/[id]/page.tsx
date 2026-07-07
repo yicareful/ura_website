@@ -20,7 +20,7 @@ export default async function RegistrationDetailPage({
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader showBackHome />
       <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
         <div className="container" style={{ maxWidth: 640 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", marginBottom: "var(--space-2)" }}>
