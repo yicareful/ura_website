@@ -31,3 +31,4 @@ export const GENDER_LABEL: Record<string, string> = {
 };
 
 export const ADMIN_SESSION_COOKIE = "ura_admin_session";
+export const RUNNER_SESSION_COOKIE = "ura_runner_session";

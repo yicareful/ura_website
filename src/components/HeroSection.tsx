@@ -4,10 +4,12 @@ export function HeroSection({
   eventCount,
   totalRunners,
   totalDistance,
+  runner,
 }: {
   eventCount: number;
   totalRunners: number;
   totalDistance: number;
+  runner?: { name: string } | null;
 }) {
   return (
     <section
@@ -96,9 +98,15 @@ export function HeroSection({
           <a href="/events" className="btn-primary">
             浏览赛事
           </a>
-          <a href="/registration/lookup" className="btn-ghost-dark">
-            查询我的报名
-          </a>
+          {runner ? (
+            <a href="/runner/my-registrations" className="btn-ghost-dark">
+              查询我的报名
+            </a>
+          ) : (
+            <a href="/runner/login" className="btn-ghost-dark">
+              前往登录
+            </a>
+          )}
         </div>
 
         <div

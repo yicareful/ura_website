@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { findExistingRegistration, getGroupById } from "@/lib/db";
+import { getCurrentRunner } from "@/lib/runner-auth";
 
 export type RegisterFormState = {
   error?: string;
@@ -13,6 +14,11 @@ export async function submitRegistration(
   _prevState: RegisterFormState,
   formData: FormData
 ): Promise<RegisterFormState> {
+  const runner = await getCurrentRunner();
+  if (!runner) {
+    return { error: "请先登录" };
+  }
+
   const groupId = String(formData.get("groupId") || "");
   const name = String(formData.get("name") || "").trim();
   const gender = String(formData.get("gender") || "");
@@ -21,7 +27,6 @@ export async function submitRegistration(
   const email = String(formData.get("email") || "").trim();
   const school = String(formData.get("school") || "").trim();
   const major = String(formData.get("major") || "").trim();
-  const studentId = String(formData.get("studentId") || "").trim();
   const emergencyContact = String(formData.get("emergencyContact") || "").trim();
   const emergencyPhone = String(formData.get("emergencyPhone") || "").trim();
 
@@ -67,9 +72,9 @@ export async function submitRegistration(
       email: email || null,
       school,
       major: major || null,
-      studentId: studentId || null,
       emergencyContact,
       emergencyPhone,
+      runnerId: runner.id,
       status: "pending_payment",
     },
   });

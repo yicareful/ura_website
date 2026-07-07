@@ -66,6 +66,25 @@ model Group {
   registrations Registration[]
 }
 
+model Runner {
+  id        String @id @default(cuid())
+  phone     String @unique
+  password  String // scrypt-hashed: "salt:hash"
+  name      String
+  gender    String
+  idCard    String
+  email     String?
+  school    String
+  major     String?
+
+  sessionToken String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  registrations Registration[]
+}
+
 model Registration {
   id      String @id @default(cuid())
   eventId String
@@ -80,7 +99,9 @@ model Registration {
   email  String?
   school String
   major  String?
-  studentId String?
+
+  runnerId  String?
+  runner    Runner?  @relation(fields: [runnerId], references: [id])
 
   emergencyContact String
   emergencyPhone   String

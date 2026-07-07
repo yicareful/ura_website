@@ -1,10 +1,12 @@
 import { getEvents } from "@/lib/db";
+import { getCurrentRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HeroSection } from "@/components/HeroSection";
 import { EventCard } from "@/components/EventCard";
 
 export default async function HomePage() {
   const events = await getEvents();
+  const runner = await getCurrentRunner();
 
   const totalRunners = events.reduce((sum, e) => sum + e._count.registrations, 0);
   const totalDistance = events.reduce(
@@ -19,6 +21,7 @@ export default async function HomePage() {
         eventCount={events.length}
         totalRunners={totalRunners}
         totalDistance={Math.round(totalDistance)}
+        runner={runner}
       />
 
       <section className="section-light" style={{ padding: "var(--space-24) 0" }}>

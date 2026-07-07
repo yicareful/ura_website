@@ -16,14 +16,27 @@ type GroupOption = {
   scheduleName: string;
 };
 
+type RunnerInfo = {
+  id: string;
+  name: string;
+  gender: string;
+  idCard: string;
+  phone: string;
+  email: string | null;
+  school: string;
+  major: string | null;
+};
+
 export function RegistrationForm({
   eventId,
   groups,
   defaultGroupId,
+  runner,
 }: {
   eventId: string;
   groups: GroupOption[];
   defaultGroupId?: string;
+  runner: RunnerInfo;
 }) {
   const initialState: RegisterFormState = {};
   const boundAction = submitRegistration.bind(null, eventId);
@@ -73,14 +86,13 @@ export function RegistrationForm({
           <label className="form-label" htmlFor="name">
             姓名 *
           </label>
-          <input className="form-input" id="name" name="name" required />
+          <input className="form-input" id="name" name="name" defaultValue={runner.name} readOnly style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="gender">
             性别 *
           </label>
-          <select className="form-select" id="gender" name="gender" required>
-            <option value="">请选择</option>
+          <select className="form-select" id="gender" name="gender" defaultValue={runner.gender} disabled style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }}>
             <option value="male">男</option>
             <option value="female">女</option>
           </select>
@@ -92,13 +104,13 @@ export function RegistrationForm({
           <label className="form-label" htmlFor="idCard">
             身份证号 *
           </label>
-          <input className="form-input" id="idCard" name="idCard" required maxLength={18} />
+          <input className="form-input" id="idCard" name="idCard" defaultValue={runner.idCard} readOnly maxLength={18} style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="phone">
             手机号 *
           </label>
-          <input className="form-input" id="phone" name="phone" required maxLength={11} />
+          <input className="form-input" id="phone" name="phone" defaultValue={runner.phone} readOnly maxLength={11} style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
       </div>
 
@@ -106,7 +118,7 @@ export function RegistrationForm({
         <label className="form-label" htmlFor="email">
           邮箱
         </label>
-        <input className="form-input" id="email" name="email" type="email" />
+        <input className="form-input" id="email" name="email" type="email" defaultValue={runner.email ?? ""} />
       </div>
 
       <div className="form-row">
@@ -114,21 +126,14 @@ export function RegistrationForm({
           <label className="form-label" htmlFor="school">
             学校 *
           </label>
-          <input className="form-input" id="school" name="school" required />
+          <input className="form-input" id="school" name="school" defaultValue={runner.school} readOnly style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="major">
             院系/专业
           </label>
-          <input className="form-input" id="major" name="major" />
+          <input className="form-input" id="major" name="major" defaultValue={runner.major ?? ""} />
         </div>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label" htmlFor="studentId">
-          学号
-        </label>
-        <input className="form-input" id="studentId" name="studentId" />
       </div>
 
       <div className="form-row">

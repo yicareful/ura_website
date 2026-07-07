@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "./src/lib/runner-auth";
 
 const prisma = new PrismaClient();
 
 async function main() {
   await prisma.registration.deleteMany();
+  await prisma.runner.deleteMany();
   await prisma.group.deleteMany();
   await prisma.schedule.deleteMany();
   await prisma.event.deleteMany();
@@ -92,6 +94,29 @@ async function main() {
     ],
   });
 
+  // 创建种子选手账号
+  const runner1 = await prisma.runner.create({
+    data: {
+      name: "张明",
+      gender: "male",
+      idCard: "370102199801011234",
+      phone: "13800138001",
+      school: "山东大学",
+      password: hashPassword("123456"),
+    },
+  });
+
+  const runner2 = await prisma.runner.create({
+    data: {
+      name: "李婷",
+      gender: "female",
+      idCard: "370202200001022345",
+      phone: "13800138002",
+      school: "山东师范大学",
+      password: hashPassword("123456"),
+    },
+  });
+
   const maleGroup1 = await prisma.group.findFirst({
     where: { scheduleId: s1.id, name: "男子组" },
   });
@@ -103,6 +128,7 @@ async function main() {
     data: {
       eventId: event1.id,
       groupId: maleGroup1!.id,
+      runnerId: runner1.id,
       name: "张明",
       gender: "male",
       idCard: "370102199801011234",
@@ -110,7 +136,6 @@ async function main() {
       email: "zhangming@example.com",
       school: "山东大学",
       major: "计算机科学与技术",
-      studentId: "202401001",
       emergencyContact: "张伟",
       emergencyPhone: "13900139001",
       status: "paid",
@@ -121,6 +146,7 @@ async function main() {
     data: {
       eventId: event1.id,
       groupId: femaleGroup1!.id,
+      runnerId: runner2.id,
       name: "李婷",
       gender: "female",
       idCard: "370202200001022345",
@@ -128,14 +154,13 @@ async function main() {
       email: "liting@example.com",
       school: "山东师范大学",
       major: "英语",
-      studentId: "202402002",
       emergencyContact: "李强",
       emergencyPhone: "13900139002",
       status: "pending_payment",
     },
   });
 
-  console.log("Seed 完成: 2 个赛事, 3 个赛程, 6 个组别, 2 个报名记录");
+  console.log("Seed 完成: 2 个赛事, 3 个赛程, 6 个组别, 2 个选手, 2 个报名记录");
 }
 
 main()

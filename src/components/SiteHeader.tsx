@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getCurrentRunner } from "@/lib/runner-auth";
+import { logoutAction } from "@/app/runner/login/actions";
 
-export function SiteHeader({ dark = false }: { dark?: boolean }) {
+export async function SiteHeader({ dark = false }: { dark?: boolean }) {
+  const runner = await getCurrentRunner();
+
   return (
     <header
       style={{
@@ -31,11 +35,50 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
         >
           URA
         </Link>
-        <nav style={{ display: "flex", gap: "var(--space-8)", fontSize: "var(--text-sm)", fontWeight: 500 }}>
+        <nav style={{ display: "flex", gap: "var(--space-8)", fontSize: "var(--text-sm)", fontWeight: 500, alignItems: "center" }}>
           <Link href="/events">赛事</Link>
-          <Link href="/registration/lookup">查询报名</Link>
+          <Link href="/runner/my-registrations">我的报名</Link>
           <Link href="/admin">管理后台</Link>
         </nav>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)" }}>
+          {runner ? (
+            <>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-xs)",
+                  fontWeight: 600,
+                  padding: "var(--space-1) var(--space-4)",
+                  borderRadius: "var(--radius-full)",
+                  background: "var(--accent-gradient)",
+                  color: "#fff",
+                  letterSpacing: "0.02em",
+                  boxShadow: "0 0 12px rgba(255,91,46,0.3)",
+                }}
+              >
+                {runner.school} · {runner.name}
+              </span>
+              <form action={logoutAction} style={{ display: "inline" }}>
+                <button
+                  type="submit"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "inherit",
+                    fontSize: "var(--text-sm)",
+                    fontWeight: 500,
+                    padding: 0,
+                  }}
+                >
+                  退出
+                </button>
+              </form>
+            </>
+          ) : (
+            <Link href="/runner/login">登录</Link>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/SiteHeader";
 import { LookupForm } from "./LookupForm";
 
-export default function LookupPage() {
+export default async function LookupPage() {
   return (
     <>
       <SiteHeader />

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getEventById } from "@/lib/db";
+import { requireRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { RegistrationForm } from "@/components/RegistrationForm";
 
@@ -12,6 +13,9 @@ export default async function RegisterPage({
 }) {
   const { id } = await params;
   const { groupId } = await searchParams;
+
+  const runner = await requireRunner(`/events/${id}/register${groupId ? `?groupId=${groupId}` : ""}`);
+
   const event = await getEventById(id);
 
   if (!event) notFound();
@@ -37,10 +41,10 @@ export default async function RegisterPage({
         <div className="container" style={{ maxWidth: 640 }}>
           <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>报名 · {event.title}</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
-            请如实填写个人信息，提交后可在「查询报名」中随时查看状态。
+            请如实填写个人信息，提交后可在「我的报名」中随时查看状态。
           </p>
 
-          <RegistrationForm eventId={event.id} groups={groups} defaultGroupId={groupId} />
+          <RegistrationForm eventId={event.id} groups={groups} defaultGroupId={groupId} runner={runner} />
         </div>
       </section>
     </>
