@@ -1,0 +1,48 @@
+import { notFound } from "next/navigation";
+import { getEventById } from "@/lib/db";
+import { SiteHeader } from "@/components/SiteHeader";
+import { RegistrationForm } from "@/components/RegistrationForm";
+
+export default async function RegisterPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ groupId?: string }>;
+}) {
+  const { id } = await params;
+  const { groupId } = await searchParams;
+  const event = await getEventById(id);
+
+  if (!event) notFound();
+  if (event.status !== "open") notFound();
+
+  const groups = event.schedules.flatMap((schedule) =>
+    schedule.groups.map((group) => ({
+      id: group.id,
+      name: group.name,
+      gender: group.gender,
+      minAge: group.minAge,
+      maxAge: group.maxAge,
+      fee: group.fee,
+      remaining: group.isOpen ? group.capacity - group._count.registrations : 0,
+      scheduleName: schedule.name,
+    }))
+  );
+
+  return (
+    <>
+      <SiteHeader />
+      <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
+        <div className="container" style={{ maxWidth: 640 }}>
+          <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>报名 · {event.title}</h1>
+          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
+            请如实填写个人信息，提交后可在「查询报名」中随时查看状态。
+          </p>
+
+          <RegistrationForm eventId={event.id} groups={groups} defaultGroupId={groupId} />
+        </div>
+      </section>
+    </>
+  );
+}

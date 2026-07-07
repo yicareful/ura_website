@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  city        String
+  location    String
+  bannerUrl   String?
+  logoUrl     String?
+
+  registrationStart DateTime
+  registrationEnd   DateTime
+  eventDate         DateTime
+
+  status String @default("draft") // draft | open | closed | finished
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schedules     Schedule[]
+  registrations Registration[]
+}
+
+model Schedule {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  name       String
+  distance   Float
+  startTime  String
+  cutoffTime String
+  capacity   Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  groups Group[]
+}
+
+model Group {
+  id         String   @id @default(cuid())
+  scheduleId String
+  schedule   Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  name     String
+  gender   String  @default("all") // male | female | all
+  minAge   Int?
+  maxAge   Int?
+  capacity Int
+  fee      Int // 单位：分
+  isOpen   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  registrations Registration[]
+}
+
+model Registration {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+
+  name   String
+  gender String
+  idCard String
+  phone  String
+  email  String?
+  school String
+  major  String?
+  studentId String?
+
+  emergencyContact String
+  emergencyPhone   String
+
+  status String @default("pending_payment") // pending_payment | paid | cancelled
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([eventId, groupId, idCard])
+}
