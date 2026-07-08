@@ -23,7 +23,7 @@ export default async function AdminEventsPage() {
               <th>城市</th>
               <th>赛事日期</th>
               <th>状态</th>
-              <th>赛程数</th>
+              <th>组别数</th>
               <th>报名数</th>
               <th>操作</th>
             </tr>
@@ -37,7 +37,7 @@ export default async function AdminEventsPage() {
                 <td>
                   <EventStatusBadge status={event.status} />
                 </td>
-                <td>{event._count.schedules}</td>
+                <td>{event._count.groups}</td>
                 <td>{event._count.registrations}</td>
                 <td style={{ display: "flex", gap: "var(--space-3)" }}>
                   <Link href={`/admin/events/${event.id}`}>查看</Link>

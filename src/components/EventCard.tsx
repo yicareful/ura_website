@@ -7,7 +7,7 @@ type EventCardProps = {
   city: string;
   eventDate: Date;
   status: string;
-  scheduleCount: number;
+  groupCount: number;
   registrationCount: number;
   index: number;
 };
@@ -18,7 +18,7 @@ export function EventCard({
   city,
   eventDate,
   status,
-  scheduleCount,
+  groupCount,
   registrationCount,
   index,
 }: EventCardProps) {
@@ -66,7 +66,7 @@ export function EventCard({
           color: "var(--color-text-secondary)",
         }}
       >
-        <span>{scheduleCount} 个赛程</span>
+        <span>{groupCount} 个组别</span>
         <span>{registrationCount} 人已报名</span>
       </div>
     </Link>

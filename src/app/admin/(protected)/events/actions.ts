@@ -7,37 +7,83 @@ export type EventFormState = {
   error?: string;
 };
 
-type ScheduleInput = {
+type GroupInput = {
   name: string;
   distance: number;
   startTime: string;
   cutoffTime: string;
+  gender: string;
+  minAge?: number | null;
+  maxAge?: number | null;
   capacity: number;
-  groups: {
-    name: string;
-    gender: string;
-    minAge?: number | null;
-    maxAge?: number | null;
-    capacity: number;
-    fee: number;
-  }[];
+  fee: number;
 };
 
-function parseSchedules(raw: string): ScheduleInput[] | null {
+function parseGroups(raw: string): GroupInput[] | null {
   try {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed) || parsed.length === 0) return null;
-    for (const s of parsed) {
-      if (!s.name || !s.distance || !s.startTime || !s.cutoffTime || !s.capacity) return null;
-      if (!Array.isArray(s.groups) || s.groups.length === 0) return null;
-      for (const g of s.groups) {
-        if (!g.name || !g.gender || !g.capacity || g.fee === undefined) return null;
+
+    for (const group of parsed) {
+      if (
+        !group.name ||
+        !group.distance ||
+        !group.startTime ||
+        !group.cutoffTime ||
+        !group.gender ||
+        !group.capacity ||
+        group.fee === undefined
+      ) {
+        return null;
       }
     }
+
     return parsed;
   } catch {
     return null;
   }
+}
+
+function parseClockTime(value: string): number | null {
+  const match = value.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+  if (!match) return null;
+
+  const [, hours, minutes] = match;
+  return Number(hours) * 60 + Number(minutes);
+}
+
+function validateGroupTimes(groups: GroupInput[]): string | null {
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+    const startMinutes = parseClockTime(group.startTime);
+    const cutoffMinutes = parseClockTime(group.cutoffTime);
+
+    if (startMinutes === null || cutoffMinutes === null) {
+      return `组别 ${i + 1} 的起跑时间和关门时间格式必须为 HH:mm`;
+    }
+
+    if (startMinutes >= cutoffMinutes) {
+      return `组别 ${i + 1} 的起跑时间必须早于关门时间`;
+    }
+  }
+
+  return null;
+}
+
+function validateGroupAges(groups: GroupInput[]): string | null {
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+
+    if (group.minAge == null || group.maxAge == null) {
+      continue;
+    }
+
+    if (Number(group.minAge) >= Number(group.maxAge)) {
+      return `组别 ${i + 1} 的最小年龄必须小于最大年龄`;
+    }
+  }
+
+  return null;
 }
 
 function slugify(title: string) {
@@ -45,7 +91,7 @@ function slugify(title: string) {
     title
       .trim()
       .toLowerCase()
-      .replace(/[^a-z0-9一-龥]+/g, "-")
+      .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
       .replace(/^-+|-+$/g, "") || `event-${Math.floor(Math.random() * 1e6)}`
   );
 }
@@ -62,7 +108,7 @@ export async function createEvent(
   const registrationEnd = String(formData.get("registrationEnd") || "");
   const eventDate = String(formData.get("eventDate") || "");
   const status = String(formData.get("status") || "draft");
-  const schedulesRaw = String(formData.get("schedulesJson") || "");
+  const groupsRaw = String(formData.get("groupsJson") || "");
 
   if (!title || !description || !city || !location || !registrationStart || !registrationEnd || !eventDate) {
     return { error: "请完整填写所有必填项" };
@@ -84,52 +130,48 @@ export async function createEvent(
     return { error: "赛事日期不能早于报名截止时间" };
   }
 
-  const schedules = parseSchedules(schedulesRaw);
-  if (!schedules) {
-    return { error: "请至少添加一个赛程，且每个赛程至少包含一个组别" };
+  const groups = parseGroups(groupsRaw);
+  if (!groups) {
+    return { error: "请至少添加一个组别，并完整填写组别信息" };
+  }
+
+  const groupTimeError = validateGroupTimes(groups);
+  if (groupTimeError) {
+    return { error: groupTimeError };
+  }
+
+  const groupAgeError = validateGroupAges(groups);
+  if (groupAgeError) {
+    return { error: groupAgeError };
   }
 
   const slug = slugify(title);
 
-  await prisma.$transaction(async (tx) => {
-    const event = await tx.event.create({
-      data: {
-        title,
-        slug,
-        description,
-        city,
-        location,
-        registrationStart: regStart,
-        registrationEnd: regEnd,
-        eventDate: eventDt,
-        status,
-      },
-    });
-
-    for (const schedule of schedules) {
-      const createdSchedule = await tx.schedule.create({
-        data: {
-          eventId: event.id,
-          name: schedule.name,
-          distance: Number(schedule.distance),
-          startTime: schedule.startTime,
-          cutoffTime: schedule.cutoffTime,
-          capacity: Number(schedule.capacity),
-        },
-      });
-
-      await tx.group.createMany({
-        data: schedule.groups.map((g) => ({
-          scheduleId: createdSchedule.id,
-          name: g.name,
-          gender: g.gender,
-          minAge: g.minAge ?? null,
-          maxAge: g.maxAge ?? null,
-          capacity: Number(g.capacity),
-          fee: Number(g.fee),
+  await prisma.event.create({
+    data: {
+      title,
+      slug,
+      description,
+      city,
+      location,
+      registrationStart: regStart,
+      registrationEnd: regEnd,
+      eventDate: eventDt,
+      status,
+      groups: {
+        create: groups.map((group) => ({
+          name: group.name,
+          distance: Number(group.distance),
+          startTime: group.startTime,
+          cutoffTime: group.cutoffTime,
+          gender: group.gender,
+          minAge: group.minAge ?? null,
+          maxAge: group.maxAge ?? null,
+          capacity: Number(group.capacity),
+          fee: Number(group.fee),
         })),
-      });
-    }
+      },
+    },
   });
 
   redirect("/admin/events");

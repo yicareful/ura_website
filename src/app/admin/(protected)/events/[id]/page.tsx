@@ -51,43 +51,43 @@ export default async function AdminEventDetailPage({
         <p style={{ marginTop: "var(--space-5)", fontSize: "var(--text-sm)" }}>{event.description}</p>
       </div>
 
-      {event.schedules.map((schedule) => (
-        <div key={schedule.id} className="card" style={{ padding: "var(--space-6)", marginBottom: "var(--space-5)" }}>
-          <h2 style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-1)" }}>{schedule.name}</h2>
-          <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-4)" }}>
-            {schedule.distance}km · 起跑 {schedule.startTime} · 关门 {schedule.cutoffTime} · 名额 {schedule.capacity}
-          </p>
-
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>组别</th>
-                  <th>性别</th>
-                  <th>年龄</th>
-                  <th>名额</th>
-                  <th>报名费</th>
-                  <th>已报名</th>
-                  <th>状态</th>
+      <div className="card" style={{ padding: "var(--space-6)", marginBottom: "var(--space-5)" }}>
+        <h2 style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-4)" }}>报名组别</h2>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>组别</th>
+                <th>距离</th>
+                <th>起跑</th>
+                <th>关门</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>名额</th>
+                <th>报名费</th>
+                <th>已报名</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              {event.groups.map((group) => (
+                <tr key={group.id}>
+                  <td>{group.name}</td>
+                  <td>{group.distance}km</td>
+                  <td>{group.startTime}</td>
+                  <td>{group.cutoffTime}</td>
+                  <td>{GENDER_LABEL[group.gender] ?? group.gender}</td>
+                  <td>{formatAgeRange(group.minAge, group.maxAge)}</td>
+                  <td>{group.capacity}</td>
+                  <td>{formatFee(group.fee)}</td>
+                  <td>{group._count.registrations}</td>
+                  <td>{group.isOpen ? "开放" : "关闭"}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {schedule.groups.map((group) => (
-                  <tr key={group.id}>
-                    <td>{group.name}</td>
-                    <td>{GENDER_LABEL[group.gender] ?? group.gender}</td>
-                    <td>{formatAgeRange(group.minAge, group.maxAge)}</td>
-                    <td>{group.capacity}</td>
-                    <td>{formatFee(group.fee)}</td>
-                    <td>{group._count.registrations}</td>
-                    <td>{group.isOpen ? "开放" : "关闭"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ))}
+      </div>
     </div>
   );
 }

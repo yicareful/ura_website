@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getEventById } from "@/lib/db";
 import { SiteHeader } from "@/components/SiteHeader";
 import { EventStatusBadge } from "@/components/StatusBadge";
-import { ScheduleTable } from "@/components/ScheduleTable";
+import { GroupTable } from "@/components/GroupTable";
 import { formatDateTime } from "@/lib/format";
 
 export default async function EventDetailPage({
@@ -61,18 +61,18 @@ export default async function EventDetailPage({
 
       <section className="section-light" style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
         <div className="container">
-          <h2 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)" }}>赛程与组别</h2>
+          <h2 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)" }}>报名组别</h2>
 
           {!canRegister && (
             <div
               className="badge badge-muted"
               style={{ marginBottom: "var(--space-6)", padding: "var(--space-3) var(--space-5)", display: "inline-block" }}
             >
-              该赛事当前不可报名（状态：{event.status === "draft" ? "待发布" : event.status === "closed" ? "报名截止" : "已结束"}）
+              该赛事当前不可报名
             </div>
           )}
 
-          <ScheduleTable eventId={event.id} schedules={event.schedules} interactive={canRegister} />
+          <GroupTable eventId={event.id} groups={event.groups} interactive={canRegister} />
         </div>
       </section>
     </>

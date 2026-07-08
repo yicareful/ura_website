@@ -42,8 +42,10 @@ export default async function RegistrationDetailPage({
                 fontSize: "var(--text-sm)",
               }}
             >
-              <Field label="赛程" value={registration.group.schedule.name} />
               <Field label="组别" value={`${registration.group.name}（${GENDER_LABEL[registration.gender] ?? registration.gender}）`} />
+              <Field label="距离" value={`${registration.group.distance}km`} />
+              <Field label="起跑时间" value={registration.group.startTime} />
+              <Field label="关门时间" value={registration.group.cutoffTime} />
               <Field label="姓名" value={registration.name} />
               <Field label="学校" value={registration.school} />
               <Field label="手机号" value={registration.phone} />
@@ -59,7 +61,7 @@ export default async function RegistrationDetailPage({
                 }}
               >
                 <p style={{ marginBottom: "var(--space-4)", color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
-                  真实支付网关（微信/支付宝）尚未接入，此按钮仅用于原型演示，模拟支付成功后状态即更新。
+                  真实支付网关尚未接入，此按钮仅用于原型演示，模拟支付成功后状态即更新。
                 </p>
                 <form action={boundMarkAsPaid}>
                   <button type="submit" className="btn-primary">

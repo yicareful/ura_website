@@ -43,7 +43,7 @@ export async function submitRegistration(
   }
 
   const group = await getGroupById(groupId);
-  if (!group || group.schedule.event.id !== eventId) {
+  if (!group || group.event.id !== eventId) {
     return { error: "报名组别不存在" };
   }
 

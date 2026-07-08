@@ -21,18 +21,18 @@ export default async function RegisterPage({
   if (!event) notFound();
   if (event.status !== "open") notFound();
 
-  const groups = event.schedules.flatMap((schedule) =>
-    schedule.groups.map((group) => ({
-      id: group.id,
-      name: group.name,
-      gender: group.gender,
-      minAge: group.minAge,
-      maxAge: group.maxAge,
-      fee: group.fee,
-      remaining: group.isOpen ? group.capacity - group._count.registrations : 0,
-      scheduleName: schedule.name,
-    }))
-  );
+  const groups = event.groups.map((group) => ({
+    id: group.id,
+    name: group.name,
+    distance: group.distance,
+    startTime: group.startTime,
+    cutoffTime: group.cutoffTime,
+    gender: group.gender,
+    minAge: group.minAge,
+    maxAge: group.maxAge,
+    fee: group.fee,
+    remaining: group.isOpen ? group.capacity - group._count.registrations : 0,
+  }));
 
   return (
     <>
@@ -41,7 +41,7 @@ export default async function RegisterPage({
         <div className="container" style={{ maxWidth: 640 }}>
           <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>报名 · {event.title}</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
-            请如实填写个人信息，提交后可在「我的报名」中随时查看状态。
+            请如实填写个人信息，提交后可在“我的报名”中随时查看状态。
           </p>
 
           <RegistrationForm eventId={event.id} groups={groups} defaultGroupId={groupId} runner={runner} />

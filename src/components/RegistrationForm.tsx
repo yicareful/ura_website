@@ -8,12 +8,14 @@ import { formatAgeRange, formatFee } from "@/lib/format";
 type GroupOption = {
   id: string;
   name: string;
+  distance: number;
+  startTime: string;
+  cutoffTime: string;
   gender: string;
   minAge: number | null;
   maxAge: number | null;
   fee: number;
   remaining: number;
-  scheduleName: string;
 };
 
 type RunnerInfo = {
@@ -60,22 +62,15 @@ export function RegistrationForm({
       )}
 
       <div className="form-group">
-        <label className="form-label" htmlFor="groupId">
-          报名组别 *
-        </label>
-        <select
-          id="groupId"
-          name="groupId"
-          className="form-select"
-          defaultValue={defaultGroupId}
-          required
-        >
+        <label className="form-label" htmlFor="groupId">报名组别 *</label>
+        <select id="groupId" name="groupId" className="form-select" defaultValue={defaultGroupId} required>
           <option value="">请选择组别</option>
           {groups.map((g) => (
             <option key={g.id} value={g.id} disabled={g.remaining <= 0}>
-              {g.scheduleName} · {g.name}（{GENDER_LABEL[g.gender] ?? g.gender}，
-              {formatAgeRange(g.minAge, g.maxAge)}，{formatFee(g.fee)}）
-              {g.remaining <= 0 ? " — 已满" : ` — 剩余${g.remaining}`}
+              {g.name}（{g.distance}km，{g.startTime}-{g.cutoffTime}，{GENDER_LABEL[g.gender] ?? g.gender}，
+              {formatAgeRange(g.minAge, g.maxAge)}，{formatFee(g.fee)}，
+              {g.remaining <= 0 ? "已满" : `剩余${g.remaining}`}
+              ）
             </option>
           ))}
         </select>
@@ -83,15 +78,11 @@ export function RegistrationForm({
 
       <div className="form-row">
         <div className="form-group">
-          <label className="form-label" htmlFor="name">
-            姓名 *
-          </label>
+          <label className="form-label" htmlFor="name">姓名 *</label>
           <input className="form-input" id="name" name="name" defaultValue={runner.name} readOnly style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="gender">
-            性别 *
-          </label>
+          <label className="form-label" htmlFor="gender">性别 *</label>
           <select className="form-select" id="gender" name="gender" defaultValue={runner.gender} disabled style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }}>
             <option value="male">男</option>
             <option value="female">女</option>
@@ -101,58 +92,44 @@ export function RegistrationForm({
 
       <div className="form-row">
         <div className="form-group">
-          <label className="form-label" htmlFor="idCard">
-            身份证号 *
-          </label>
+          <label className="form-label" htmlFor="idCard">身份证号 *</label>
           <input className="form-input" id="idCard" name="idCard" defaultValue={runner.idCard} readOnly maxLength={18} style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="phone">
-            手机号 *
-          </label>
+          <label className="form-label" htmlFor="phone">手机号 *</label>
           <input className="form-input" id="phone" name="phone" defaultValue={runner.phone} readOnly maxLength={11} style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="email">
-          邮箱
-        </label>
+        <label className="form-label" htmlFor="email">邮箱</label>
         <input className="form-input" id="email" name="email" type="email" defaultValue={runner.email ?? ""} />
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label className="form-label" htmlFor="school">
-            学校 *
-          </label>
+          <label className="form-label" htmlFor="school">学校 *</label>
           <input className="form-input" id="school" name="school" defaultValue={runner.school} readOnly style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="major">
-            院系/专业
-          </label>
+          <label className="form-label" htmlFor="major">院系/专业</label>
           <input className="form-input" id="major" name="major" defaultValue={runner.major ?? ""} />
         </div>
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label className="form-label" htmlFor="emergencyContact">
-            紧急联系人 *
-          </label>
+          <label className="form-label" htmlFor="emergencyContact">紧急联系人 *</label>
           <input className="form-input" id="emergencyContact" name="emergencyContact" required />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="emergencyPhone">
-            紧急联系人电话 *
-          </label>
+          <label className="form-label" htmlFor="emergencyPhone">紧急联系人电话 *</label>
           <input className="form-input" id="emergencyPhone" name="emergencyPhone" required maxLength={11} />
         </div>
       </div>
 
       <button type="submit" className="btn-primary" disabled={pending} style={{ marginTop: "var(--space-4)" }}>
-        {pending ? "提交中…" : "提交报名"}
+        {pending ? "提交中..." : "提交报名"}
       </button>
     </form>
   );

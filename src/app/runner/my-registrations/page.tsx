@@ -30,7 +30,7 @@ export default async function MyRegistrationsPage() {
     where: { runnerId: runner.id },
     include: {
       event: true,
-      group: { include: { schedule: true } },
+      group: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -76,7 +76,7 @@ export default async function MyRegistrationsPage() {
                   <div>
                     <div style={{ fontWeight: 600 }}>{r.event.title}</div>
                     <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
-                      {r.group.schedule.name} · {r.group.name}
+                      {r.group.name}
                     </div>
                     <div style={{ color: "var(--color-text-muted)", fontSize: "var(--text-xs)", marginTop: "var(--space-1)" }}>
                       报名编号：{r.id.slice(0, 8)}...

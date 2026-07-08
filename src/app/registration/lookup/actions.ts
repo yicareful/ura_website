@@ -9,7 +9,6 @@ export async function lookupRegistrations(idCard: string, phone: string) {
     id: r.id,
     status: r.status,
     eventTitle: r.event.title,
-    scheduleName: r.group.schedule.name,
     groupName: r.group.name,
   }));
 }

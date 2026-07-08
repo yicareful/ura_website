@@ -10,7 +10,7 @@ export default async function HomePage() {
 
   const totalRunners = events.reduce((sum, e) => sum + e._count.registrations, 0);
   const totalDistance = events.reduce(
-    (sum, e) => sum + e.schedules.reduce((s, sc) => s + sc.distance, 0),
+    (sum, e) => sum + e.groups.reduce((s, group) => s + group.distance, 0),
     0
   );
 
@@ -51,7 +51,7 @@ export default async function HomePage() {
                   city={event.city}
                   eventDate={event.eventDate}
                   status={event.status}
-                  scheduleCount={event.schedules.length}
+                  groupCount={event.groups.length}
                   registrationCount={event._count.registrations}
                   index={i}
                 />

@@ -4,8 +4,8 @@ export function getEvents() {
   return prisma.event.findMany({
     orderBy: { eventDate: "asc" },
     include: {
-      schedules: true,
-      _count: { select: { registrations: true } },
+      groups: true,
+      _count: { select: { registrations: true, groups: true } },
     },
   });
 }
@@ -14,13 +14,9 @@ export function getEventById(id: string) {
   return prisma.event.findUnique({
     where: { id },
     include: {
-      schedules: {
-        orderBy: { distance: "desc" },
-        include: {
-          groups: {
-            include: { _count: { select: { registrations: true } } },
-          },
-        },
+      groups: {
+        orderBy: [{ distance: "desc" }, { name: "asc" }],
+        include: { _count: { select: { registrations: true } } },
       },
     },
   });
@@ -30,7 +26,7 @@ export function getGroupById(id: string) {
   return prisma.group.findUnique({
     where: { id },
     include: {
-      schedule: { include: { event: true } },
+      event: true,
       _count: { select: { registrations: true } },
     },
   });
@@ -53,7 +49,7 @@ export function getRegistrationById(id: string) {
     where: { id },
     include: {
       event: true,
-      group: { include: { schedule: true } },
+      group: true,
     },
   });
 }
@@ -66,7 +62,7 @@ export function findRegistrationsByIdCardAndPhone(
     where: { idCard, phone },
     include: {
       event: true,
-      group: { include: { schedule: true } },
+      group: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -85,7 +81,7 @@ export function getEventsForAdmin() {
   return prisma.event.findMany({
     orderBy: { createdAt: "desc" },
     include: {
-      _count: { select: { registrations: true, schedules: true } },
+      _count: { select: { registrations: true, groups: true } },
     },
   });
 }
@@ -93,7 +89,7 @@ export function getEventsForAdmin() {
 export function getEventRegistrations(eventId: string) {
   return prisma.registration.findMany({
     where: { eventId },
-    include: { group: { include: { schedule: true } } },
+    include: { group: true },
     orderBy: { createdAt: "desc" },
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { Suspense, useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { registerAction, type RegisterFormState } from "./actions";
@@ -8,6 +8,14 @@ import { registerAction, type RegisterFormState } from "./actions";
 const initialState: RegisterFormState = {};
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
+  );
+}
+
+function RegisterForm() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "";
   const [state, formAction, pending] = useActionState(registerAction, initialState);
@@ -39,7 +47,7 @@ export default function RegisterPage() {
           gap: "var(--space-1)",
         }}
       >
-        ← 回到首页
+        返回首页
       </Link>
       <div className="card" style={{ padding: "var(--space-10)", width: 480, maxWidth: "100%" }}>
         <h1 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-1)" }}>创建账号</h1>
@@ -110,7 +118,7 @@ export default function RegisterPage() {
           </div>
 
           <button type="submit" className="btn-primary" style={{ width: "100%", marginTop: "var(--space-2)" }} disabled={pending}>
-            {pending ? "注册中…" : "注册"}
+            {pending ? "注册中..." : "注册"}
           </button>
         </form>
 

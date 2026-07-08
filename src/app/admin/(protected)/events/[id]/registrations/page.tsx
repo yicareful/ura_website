@@ -31,7 +31,6 @@ export default async function EventRegistrationsPage({
               <th>身份证号</th>
               <th>手机号</th>
               <th>学校</th>
-              <th>赛程</th>
               <th>组别</th>
               <th>报名费</th>
               <th>状态</th>
@@ -45,7 +44,6 @@ export default async function EventRegistrationsPage({
                 <td>{r.idCard}</td>
                 <td>{r.phone}</td>
                 <td>{r.school}</td>
-                <td>{r.group.schedule.name}</td>
                 <td>{r.group.name}</td>
                 <td>{formatFee(r.group.fee)}</td>
                 <td>
@@ -55,7 +53,7 @@ export default async function EventRegistrationsPage({
             ))}
             {registrations.length === 0 && (
               <tr>
-                <td colSpan={9} style={{ textAlign: "center", color: "var(--color-text-secondary)" }}>
+                <td colSpan={8} style={{ textAlign: "center", color: "var(--color-text-secondary)" }}>
                   暂无报名记录
                 </td>
               </tr>

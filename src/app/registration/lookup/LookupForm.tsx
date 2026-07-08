@@ -27,20 +27,16 @@ export function LookupForm() {
       <form action={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
-            <label className="form-label" htmlFor="idCard">
-              身份证号
-            </label>
+            <label className="form-label" htmlFor="idCard">身份证号</label>
             <input className="form-input" id="idCard" name="idCard" required maxLength={18} />
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="phone">
-              手机号
-            </label>
+            <label className="form-label" htmlFor="phone">手机号</label>
             <input className="form-input" id="phone" name="phone" required maxLength={11} />
           </div>
         </div>
         <button type="submit" className="btn-primary" disabled={pending}>
-          {pending ? "查询中…" : "查询报名"}
+          {pending ? "查询中..." : "查询报名"}
         </button>
       </form>
 
@@ -63,7 +59,7 @@ export function LookupForm() {
                   <div>
                     <div style={{ fontWeight: 600 }}>{r.eventTitle}</div>
                     <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
-                      {r.scheduleName} · {r.groupName}
+                      {r.groupName}
                     </div>
                   </div>
                   <RegistrationStatusBadge status={r.status} />

@@ -12,7 +12,7 @@ export default async function EventsPage() {
         <div className="container">
           <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-3)" }}>全部赛事</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
-            浏览所有已发布的长跑赛事，选择赛程与组别开始报名。
+            浏览所有已发布的长跑赛事，选择适合的报名组别。
           </p>
 
           {events.length === 0 ? (
@@ -33,7 +33,7 @@ export default async function EventsPage() {
                   city={event.city}
                   eventDate={event.eventDate}
                   status={event.status}
-                  scheduleCount={event.schedules.length}
+                  groupCount={event.groups.length}
                   registrationCount={event._count.registrations}
                   index={i}
                 />
