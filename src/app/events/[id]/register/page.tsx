@@ -39,10 +39,8 @@ export default async function RegisterPage({
       <SiteHeader showBackHome />
       <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
         <div className="container" style={{ maxWidth: 760 }}>
-          <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
-            REGISTRATION FORM
-          </p>
-          <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)" }}>报名 · {event.title}</h1>
+          <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>REGISTRATION FORM</p>
+          <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)", fontStyle: "italic" }}>报名 · {event.title}</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)", fontSize: "var(--text-lg)" }}>
             请核对个人信息并补充紧急联系人。提交后可在“我的报名”中查看状态。
           </p>

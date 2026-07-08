@@ -1,4 +1,4 @@
-import { requireRunner } from "@/lib/runner-auth";
+﻿import { requireRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import Link from "next/link";
 
@@ -8,60 +8,23 @@ export default async function ProfilePage() {
   return (
     <>
       <SiteHeader showBackHome />
-      <section
-        style={{
-          minHeight: "calc(100vh - var(--header-h))",
-          background: "var(--color-light-base)",
-          padding: "var(--space-10) var(--space-6)",
-        }}
-      >
+      <section style={{ padding: "var(--space-12) var(--space-6) var(--space-24)", background: "var(--color-paper)" }}>
         <div className="container" style={{ maxWidth: 640 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              justifyContent: "space-between",
-              marginBottom: "var(--space-2)",
-            }}
-          >
-            <h1 style={{ fontSize: "var(--text-2xl)" }}>个人信息</h1>
-            <Link
-              href="/runner/profile/edit"
-              className="btn-secondary"
-              style={{ fontSize: "var(--text-sm)", padding: "var(--space-2) var(--space-5)" }}
-            >
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "var(--space-2)" }}>
+            <h1 style={{ fontSize: "var(--text-3xl)", fontStyle: "italic" }}>个人信息</h1>
+            <Link href="/runner/profile/edit" className="btn-secondary" style={{ fontSize: "var(--text-sm)", padding: "var(--space-2) var(--space-5)" }}>
               编辑
             </Link>
           </div>
-          <p
-            style={{
-              color: "var(--color-text-secondary)",
-              fontSize: "var(--text-sm)",
-              marginBottom: "var(--space-10)",
-            }}
-          >
-            查看你的账号信息，点击"编辑"修改邮箱或密码
+          <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-10)" }}>
+            查看你的账号信息，点击“编辑”修改邮箱或密码。
           </p>
 
-          {/* 基本信息（只读） */}
-          <div
-            className="card"
-            style={{ padding: "var(--space-8)" }}
-          >
-            <h2
-              style={{
-                fontSize: "var(--text-lg)",
-                marginBottom: "var(--space-6)",
-              }}
-            >
-              基本信息
-            </h2>
+          <div className="card notch" style={{ padding: "var(--space-8)" }}>
+            <h2 style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-6)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".04em", color: "var(--color-text-secondary)" }}>基本信息</h2>
             <div className="form-row" style={{ marginBottom: "var(--space-5)" }}>
               <InfoField label="姓名" value={runner.name} />
-              <InfoField
-                label="性别"
-                value={runner.gender === "male" ? "男" : "女"}
-              />
+              <InfoField label="性别" value={runner.gender === "male" ? "男" : "女"} />
             </div>
             <div className="form-row" style={{ marginBottom: "var(--space-5)" }}>
               <InfoField label="手机号" value={runner.phone} />
@@ -85,19 +48,8 @@ export default async function ProfilePage() {
 function InfoField({ label, value }: { label: string; value: string }) {
   return (
     <div className="form-group" style={{ marginBottom: 0 }}>
-      <label className="form-label" style={{ fontSize: "var(--text-xs)" }}>
-        {label}
-      </label>
-      <p
-        style={{
-          fontSize: "var(--text-base)",
-          fontWeight: 500,
-          color: "var(--color-text-primary)",
-          padding: "var(--space-2) 0",
-        }}
-      >
-        {value}
-      </p>
+      <label className="form-label" style={{ fontSize: "var(--text-xs)" }}>{label}</label>
+      <p style={{ fontSize: "var(--text-base)", fontWeight: 500, color: "var(--color-text-primary)", padding: "var(--space-2) 0" }}>{value}</p>
     </div>
   );
 }

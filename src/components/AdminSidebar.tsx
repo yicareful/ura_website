@@ -10,7 +10,7 @@ export function AdminSidebar() {
   return (
     <aside
       style={{
-        width: 240,
+        width: 250,
         flexShrink: 0,
         background: "var(--color-asphalt)",
         color: "var(--color-text-on-dark)",
@@ -19,6 +19,9 @@ export function AdminSidebar() {
         display: "flex",
         flexDirection: "column",
         borderRight: "1px solid rgba(255,255,255,0.1)",
+        position: "sticky",
+        top: 0,
+        alignSelf: "flex-start",
       }}
     >
       <Link
@@ -32,13 +35,14 @@ export function AdminSidebar() {
           display: "inline-flex",
           alignItems: "center",
           gap: "var(--space-2)",
+          letterSpacing: ".03em",
         }}
       >
         ← 返回首页
       </Link>
       <div style={{ marginBottom: "var(--space-8)" }}>
-        <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-3xl)", fontWeight: 800, lineHeight: 1 }}>URA</div>
-        <p style={{ fontSize: "var(--text-xs)", color: "var(--color-yellow)", fontFamily: "var(--font-mono)", fontWeight: 700 }}>
+        <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-3xl)", fontWeight: 800, lineHeight: 1, fontStyle: "italic" }}>URA</div>
+        <p style={{ fontSize: "var(--text-xs)", color: "var(--color-yellow)", fontFamily: "var(--font-mono)", fontWeight: 700, letterSpacing: ".1em" }}>
           RACE OPERATIONS
         </p>
       </div>
@@ -50,9 +54,12 @@ export function AdminSidebar() {
             href={item.href}
             style={{
               padding: "var(--space-3) var(--space-4)",
-              borderRadius: "var(--radius-md)",
+              borderRadius: "var(--radius-sm)",
               fontSize: "var(--text-sm)",
               fontWeight: 800,
+              fontFamily: "var(--font-display)",
+              textTransform: "uppercase",
+              letterSpacing: ".02em",
               border: "1px solid rgba(255,255,255,0.08)",
             }}
             className="admin-nav-link"

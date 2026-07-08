@@ -33,7 +33,7 @@ export function EventCard({
   return (
     <Link
       href={`/events/${id}`}
-      className="card event-card stagger-enter visible"
+      className="card event-card notch stagger-enter visible"
       style={{
         display: "grid",
         gridTemplateRows: "auto 1fr auto",
@@ -42,15 +42,20 @@ export function EventCard({
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--space-4)", marginBottom: "var(--space-6)" }}>
-        <div style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)" }}>
-          CHECKPOINT {serial} / {city}
+        <div style={{ display: "flex", alignItems: "baseline", gap: "var(--space-3)" }}>
+          <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "var(--text-3xl)", lineHeight: 1, color: "var(--color-red)", fontStyle: "italic" }}>
+            {serial}
+          </span>
+          <span style={{ fontFamily: "var(--font-mono)", color: "var(--color-text-secondary)", fontWeight: 700, fontSize: "var(--text-xs)", letterSpacing: ".04em", textTransform: "uppercase" }}>
+            {city}
+          </span>
         </div>
         <EventStatusBadge status={status} />
       </div>
 
       <div>
         <h3 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-3)", maxWidth: "13ch" }}>{title}</h3>
-        <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", fontFamily: "var(--font-mono)" }}>
+        <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", fontFamily: "var(--font-mono)", letterSpacing: ".02em" }}>
           {dateLabel}
         </p>
       </div>
@@ -65,10 +70,11 @@ export function EventCard({
           borderTop: "1px dashed var(--color-border-strong)",
           fontSize: "var(--text-sm)",
           color: "var(--color-text-secondary)",
+          fontFamily: "var(--font-mono)",
         }}
       >
-        <span><strong style={{ color: "var(--color-text-primary)" }}>{groupCount}</strong> 个组别</span>
-        <span><strong style={{ color: "var(--color-text-primary)" }}>{registrationCount}</strong> 人报名</span>
+        <span><strong style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-display)", fontSize: "var(--text-lg)" }}>{groupCount}</strong> 组别</span>
+        <span><strong style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-display)", fontSize: "var(--text-lg)" }}>{registrationCount}</strong> 人报名</span>
       </div>
     </Link>
   );

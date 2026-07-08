@@ -23,7 +23,7 @@ export function LookupForm() {
   }
 
   return (
-    <div className="card" style={{ padding: "var(--space-8)" }}>
+    <div className="card notch" style={{ padding: "var(--space-8)" }}>
       <form action={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
@@ -48,7 +48,7 @@ export function LookupForm() {
                 <Link
                   key={r.id}
                   href={`/registration/${r.id}`}
-                  className="card"
+                  className="card notch"
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -57,8 +57,8 @@ export function LookupForm() {
                   }}
                 >
                   <div>
-                    <div style={{ fontWeight: 700 }}>{r.eventTitle}</div>
-                    <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
+                    <div style={{ fontWeight: 800, fontFamily: "var(--font-display)", fontSize: "var(--text-xl)" }}>{r.eventTitle}</div>
+                    <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", fontFamily: "var(--font-mono)" }}>
                       {r.groupName}
                     </div>
                   </div>
@@ -67,7 +67,7 @@ export function LookupForm() {
               ))}
             </div>
           ) : (
-            <p style={{ color: "var(--color-text-secondary)" }}>未找到匹配的报名记录，请核对身份证号与手机号。</p>
+            <p style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)" }}>未找到匹配的报名记录，请核对身份证号与手机号。</p>
           )}
         </div>
       )}

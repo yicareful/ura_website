@@ -21,35 +21,11 @@ function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
 
   return (
-    <section
-      className="section-dark"
-      style={{
-        minHeight: "100vh",
-        display: "grid",
-        placeItems: "center",
-        padding: "var(--space-6)",
-        position: "relative",
-      }}
-    >
-      <Link
-        href="/"
-        style={{
-          position: "absolute",
-          top: "var(--space-6)",
-          left: "var(--space-6)",
-          fontFamily: "var(--font-mono)",
-          fontWeight: 700,
-          fontSize: "var(--text-xs)",
-          color: "var(--color-text-on-dark-muted)",
-        }}
-      >
-        ← 返回首页
-      </Link>
-      <div className="card" style={{ padding: "var(--space-10)", width: 400, maxWidth: "100%" }}>
-        <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
-          RUNNER ACCESS
-        </p>
-        <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-2)" }}>选手登录</h1>
+    <section className="section-dark auth-screen">
+      <Link href="/" className="auth-back">← 返回首页</Link>
+      <div className="auth-card notch" style={{ width: 400 }}>
+        <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>RUNNER ACCESS</p>
+        <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-2)", fontStyle: "italic" }}>选手登录</h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-8)" }}>
           使用手机号和密码进入报名中心。
         </p>
@@ -67,7 +43,7 @@ function LoginForm() {
             <input className="form-input" id="password" name="password" type="password" required />
           </div>
 
-          {state.error && <p className="form-error" style={{ marginBottom: "var(--space-4)" }}>{state.error}</p>}
+          {state.error && <p className="form-error" style={{ marginBottom: "var(--space-4)", padding: "var(--space-3) var(--space-4)", background: "rgba(225,29,46,0.08)", borderRadius: "var(--radius-sm)", borderLeft: "4px solid var(--color-red)" }}>{state.error}</p>}
 
           <button type="submit" className="btn-primary" style={{ width: "100%" }} disabled={pending}>
             {pending ? "登录中..." : "登录"}
@@ -76,7 +52,7 @@ function LoginForm() {
 
         <p style={{ textAlign: "center", marginTop: "var(--space-6)", fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
           还没有账号？{" "}
-          <Link href={`/runner/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`} style={{ color: "var(--color-primary)", fontWeight: 800 }}>
+          <Link href={`/runner/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`} style={{ color: "var(--color-red)", fontWeight: 800 }}>
             立即注册
           </Link>
         </p>

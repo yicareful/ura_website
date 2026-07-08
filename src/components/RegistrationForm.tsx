@@ -45,16 +45,18 @@ export function RegistrationForm({
   const [state, formAction, pending] = useActionState(boundAction, initialState);
 
   return (
-    <form action={formAction} className="card" style={{ padding: "var(--space-8)" }}>
+    <form action={formAction} className="card notch" style={{ padding: "var(--space-8)" }}>
       {state?.error && (
         <div
           className="form-error"
           style={{
             marginBottom: "var(--space-5)",
             padding: "var(--space-3) var(--space-4)",
-            background: "rgba(217,56,42,0.08)",
-            borderRadius: "var(--radius-md)",
-            border: "1px solid rgba(217,56,42,0.22)",
+            background: "rgba(225,29,46,0.08)",
+            borderRadius: "var(--radius-sm)",
+            border: "1px solid rgba(225,29,46,0.25)",
+            borderLeft: "4px solid var(--color-red)",
+            fontFamily: "var(--font-mono)",
           }}
         >
           {state.error}

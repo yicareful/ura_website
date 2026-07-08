@@ -25,15 +25,15 @@ export default async function EventDetailPage({
         style={{ padding: "var(--space-16) 0 var(--space-20)", position: "relative", overflow: "hidden" }}
       >
         <div className="container" style={{ position: "relative" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(260px, 360px)", gap: "var(--space-12)", alignItems: "end" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(280px, 360px)", gap: "var(--space-12)", alignItems: "end" }}>
             <div>
               <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", marginBottom: "var(--space-5)", flexWrap: "wrap" }}>
                 <EventStatusBadge status={event.status} />
-                <span style={{ color: "var(--color-text-on-dark-muted)", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)" }}>
-                  {event.city} · {event.location}
+                <span style={{ color: "var(--color-text-on-dark-muted)", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", letterSpacing: ".03em", textTransform: "uppercase" }}>
+                  {event.city} / {event.location}
                 </span>
               </div>
-              <h1 style={{ fontSize: "var(--text-6xl)", marginBottom: "var(--space-6)", maxWidth: "13ch" }}>
+              <h1 style={{ fontSize: "var(--text-6xl)", marginBottom: "var(--space-6)", maxWidth: "14ch", fontStyle: "italic" }}>
                 {event.title}
               </h1>
               <p style={{ color: "var(--color-text-on-dark-muted)", maxWidth: "62ch", fontSize: "var(--text-lg)" }}>
@@ -41,18 +41,19 @@ export default async function EventDetailPage({
               </p>
             </div>
 
-            <div className="card-dark" style={{ padding: "var(--space-6)", background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
-              <div style={{ fontFamily: "var(--font-mono)", color: "var(--color-yellow)", fontSize: "var(--text-xs)", fontWeight: 700, marginBottom: "var(--space-5)" }}>
+            <div className="race-window notch">
+              <div style={{ fontFamily: "var(--font-mono)", color: "var(--color-yellow)", fontSize: "var(--text-xs)", fontWeight: 700, marginBottom: "var(--space-5)", letterSpacing: ".06em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+                <span style={{ width: 8, height: 8, background: "var(--color-red)", borderRadius: "50%", display: "inline-block" }} />
                 RACE WINDOW
               </div>
               <div style={{ display: "grid", gap: "var(--space-5)" }}>
                 <div>
-                  <div style={{ color: "var(--color-text-on-dark-muted)", marginBottom: "var(--space-1)", fontSize: "var(--text-sm)" }}>比赛日期</div>
-                  <div style={{ fontWeight: 700 }}>{formatDateTime(event.eventDate)}</div>
+                  <div style={{ color: "var(--color-text-on-dark-muted)", marginBottom: "var(--space-1)", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".03em" }}>比赛日期</div>
+                  <div style={{ fontWeight: 700, fontFamily: "var(--font-display)", fontSize: "var(--text-xl)" }}>{formatDateTime(event.eventDate)}</div>
                 </div>
                 <div>
-                  <div style={{ color: "var(--color-text-on-dark-muted)", marginBottom: "var(--space-1)", fontSize: "var(--text-sm)" }}>报名截止</div>
-                  <div style={{ fontWeight: 700 }}>{formatDateTime(event.registrationEnd)}</div>
+                  <div style={{ color: "var(--color-text-on-dark-muted)", marginBottom: "var(--space-1)", fontSize: "var(--text-xs)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".03em" }}>报名截止</div>
+                  <div style={{ fontWeight: 700, fontFamily: "var(--font-display)", fontSize: "var(--text-xl)" }}>{formatDateTime(event.registrationEnd)}</div>
                 </div>
               </div>
             </div>
@@ -64,8 +65,8 @@ export default async function EventDetailPage({
         <div className="container">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "var(--space-6)", marginBottom: "var(--space-8)", flexWrap: "wrap" }}>
             <div>
-              <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontSize: "var(--text-xs)", fontWeight: 700, marginBottom: "var(--space-2)" }}>GROUPS</p>
-              <h2 style={{ fontSize: "var(--text-4xl)" }}>报名组别</h2>
+              <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>START LIST</p>
+              <h2 style={{ fontSize: "var(--text-4xl)", fontStyle: "italic" }}>报名组别</h2>
             </div>
 
             {!canRegister && (

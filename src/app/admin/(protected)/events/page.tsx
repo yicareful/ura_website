@@ -10,10 +10,8 @@ export default async function AdminEventsPage() {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: "var(--space-6)", marginBottom: "var(--space-8)", flexWrap: "wrap" }}>
         <div>
-          <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
-            EVENT OPERATIONS
-          </p>
-          <h1 style={{ fontSize: "var(--text-5xl)" }}>赛事管理</h1>
+          <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>EVENT OPERATIONS</p>
+          <h1 style={{ fontSize: "var(--text-5xl)", fontStyle: "italic" }}>赛事管理</h1>
         </div>
         <Link href="/admin/events/new" className="btn-primary">
           新建赛事
@@ -36,26 +34,24 @@ export default async function AdminEventsPage() {
           <tbody>
             {events.map((event) => (
               <tr key={event.id}>
-                <td style={{ fontWeight: 700 }}>{event.title}</td>
+                <td style={{ fontWeight: 700, fontFamily: "var(--font-display)", fontSize: "var(--text-base)" }}>{event.title}</td>
                 <td>{event.city}</td>
-                <td>{formatDate(event.eventDate)}</td>
-                <td>
-                  <EventStatusBadge status={event.status} />
-                </td>
+                <td style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)" }}>{formatDate(event.eventDate)}</td>
+                <td><EventStatusBadge status={event.status} /></td>
                 <td>{event._count.groups}</td>
                 <td>{event._count.registrations}</td>
-                <td style={{ display: "flex", gap: "var(--space-3)" }}>
-                  <Link href={`/admin/events/${event.id}`}>查看</Link>
-                  <Link href={`/admin/events/${event.id}/edit`}>编辑</Link>
-                  <Link href={`/admin/events/${event.id}/registrations`}>名册</Link>
+                <td>
+                  <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: ".03em" }}>
+                    <Link href={`/admin/events/${event.id}`} style={{ color: "var(--color-blue)", fontWeight: 700 }}>查看</Link>
+                    <Link href={`/admin/events/${event.id}/edit`} style={{ color: "var(--color-text-secondary)", fontWeight: 700 }}>编辑</Link>
+                    <Link href={`/admin/events/${event.id}/registrations`} style={{ color: "var(--color-red)", fontWeight: 700 }}>名册</Link>
+                  </div>
                 </td>
               </tr>
             ))}
             {events.length === 0 && (
               <tr>
-                <td colSpan={7} style={{ textAlign: "center", color: "var(--color-text-secondary)" }}>
-                  暂无赛事
-                </td>
+                <td colSpan={7} style={{ textAlign: "center", color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)" }}>暂无赛事</td>
               </tr>
             )}
           </tbody>

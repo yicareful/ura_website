@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { getEventById } from "@/lib/db";
 import { EditEventForm } from "./EditEventForm";
 
@@ -14,7 +14,8 @@ export default async function EditEventPage({
 
   return (
     <div>
-      <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-8)" }}>编辑赛事</h1>
+      <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>EDIT EVENT</p>
+      <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-8)", fontStyle: "italic" }}>编辑赛事</h1>
       <EditEventForm event={event} />
     </div>
   );

@@ -26,12 +26,10 @@ export default async function HomePage() {
 
       <section className="section-light" style={{ padding: "var(--space-20) 0 var(--space-24)" }}>
         <div className="container">
-          <div style={{ marginBottom: "var(--space-10)", display: "flex", justifyContent: "space-between", alignItems: "end", gap: "var(--space-6)", flexWrap: "wrap" }}>
+          <div style={{ marginBottom: "var(--space-12)", display: "flex", justifyContent: "space-between", alignItems: "end", gap: "var(--space-6)", flexWrap: "wrap" }}>
             <div>
-              <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
-                OPEN RACE WINDOWS
-              </p>
-              <h2 style={{ fontSize: "var(--text-5xl)" }}>近期赛事</h2>
+              <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>OPEN RACE WINDOWS</p>
+              <h2 style={{ fontSize: "var(--text-6xl)", fontStyle: "italic" }}>近期赛事</h2>
             </div>
             <a href="/events" className="btn-secondary">
               查看全部赛事
@@ -39,7 +37,7 @@ export default async function HomePage() {
           </div>
 
           {events.length === 0 ? (
-            <div className="card" style={{ padding: "var(--space-8)", color: "var(--color-text-secondary)" }}>
+            <div className="card" style={{ padding: "var(--space-10)", color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)" }}>
               暂无赛事，请稍后再来查看。
             </div>
           ) : (

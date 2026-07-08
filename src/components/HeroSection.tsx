@@ -22,7 +22,8 @@ export function HeroSection({
           </div>
 
           <h1 className="race-hero__title stagger-enter visible">
-            把每一次报名，接入同一条赛道
+            把每一次报名<br />
+            接入同一条<span>赛道</span>
           </h1>
 
           <p className="race-hero__copy stagger-enter visible">

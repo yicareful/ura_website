@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { getEventById, getEventRegistrations } from "@/lib/db";
 import { RegistrationStatusBadge } from "@/components/StatusBadge";
 import { GENDER_LABEL } from "@/lib/constants";
@@ -17,8 +17,9 @@ export default async function EventRegistrationsPage({
 
   return (
     <div>
-      <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-1)" }}>{event.title} · 报名名册</h1>
-      <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)" }}>
+      <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>START LIST</p>
+      <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-1)", fontStyle: "italic" }}>{event.title} · 报名名册</h1>
+      <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)", fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)" }}>
         共 {registrations.length} 条报名记录
       </p>
 
@@ -39,23 +40,19 @@ export default async function EventRegistrationsPage({
           <tbody>
             {registrations.map((r) => (
               <tr key={r.id}>
-                <td>{r.name}</td>
+                <td style={{ fontWeight: 700, fontFamily: "var(--font-display)", fontSize: "var(--text-base)" }}>{r.name}</td>
                 <td>{GENDER_LABEL[r.gender] ?? r.gender}</td>
-                <td>{r.idCard}</td>
-                <td>{r.phone}</td>
+                <td style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)" }}>{r.idCard}</td>
+                <td style={{ fontFamily: "var(--font-mono)" }}>{r.phone}</td>
                 <td>{r.school}</td>
                 <td>{r.group.name}</td>
-                <td>{formatFee(r.group.fee)}</td>
-                <td>
-                  <RegistrationStatusBadge status={r.status} />
-                </td>
+                <td style={{ fontFamily: "var(--font-mono)" }}>{formatFee(r.group.fee)}</td>
+                <td><RegistrationStatusBadge status={r.status} /></td>
               </tr>
             ))}
             {registrations.length === 0 && (
               <tr>
-                <td colSpan={8} style={{ textAlign: "center", color: "var(--color-text-secondary)" }}>
-                  暂无报名记录
-                </td>
+                <td colSpan={8} style={{ textAlign: "center", color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)" }}>暂无报名记录</td>
               </tr>
             )}
           </tbody>

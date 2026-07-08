@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { createEvent, type EventFormState } from "../actions";
@@ -63,11 +63,12 @@ function TimePicker({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          background: "var(--color-light-surface)",
+          background: "var(--color-surface)",
+          fontFamily: "var(--font-mono)",
         }}
       >
         <span>{value}</span>
-        <span style={{ color: "var(--color-text-muted)", fontSize: "var(--text-sm)" }}>选择</span>
+        <span style={{ color: "var(--color-text-muted)", fontSize: "var(--text-xs)" }}>选择</span>
       </button>
 
       {open && (
@@ -93,7 +94,7 @@ function TimePicker({
                     type="button"
                     onClick={() => setTime(h, minute)}
                     className={h === hour ? "btn-primary" : "btn-secondary"}
-                    style={{ padding: "var(--space-1) 0", borderRadius: "var(--radius-sm)", fontSize: "var(--text-sm)" }}
+                    style={{ padding: "var(--space-1) 0", borderRadius: "var(--radius-sm)", fontSize: "var(--text-sm)", minHeight: 32 }}
                   >
                     {h}
                   </button>
@@ -109,7 +110,7 @@ function TimePicker({
                     type="button"
                     onClick={() => setTime(hour, m)}
                     className={m === minute ? "btn-primary" : "btn-secondary"}
-                    style={{ padding: "var(--space-1) 0", borderRadius: "var(--radius-sm)", fontSize: "var(--text-sm)" }}
+                    style={{ padding: "var(--space-1) 0", borderRadius: "var(--radius-sm)", fontSize: "var(--text-sm)", minHeight: 32 }}
                   >
                     {m}
                   </button>
@@ -164,9 +165,8 @@ export function EventForm() {
     <form action={formAction}>
       <input type="hidden" name="groupsJson" value={buildGroupsJson()} />
 
-      <div className="card" style={{ padding: "var(--space-6)", marginBottom: "var(--space-6)" }}>
-        <h2 style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-4)" }}>基本信息</h2>
-
+      <div className="card notch" style={{ padding: "var(--space-6)", marginBottom: "var(--space-6)" }}>
+        <h2 style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-5)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".04em", color: "var(--color-text-secondary)" }}>赛事信息</h2>
         <div className="form-group">
           <label className="form-label" htmlFor="title">赛事名称</label>
           <input className="form-input" id="title" name="title" required />
@@ -216,9 +216,9 @@ export function EventForm() {
         </div>
       </div>
 
-      <div className="card" style={{ padding: "var(--space-6)", marginBottom: "var(--space-6)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)" }}>
-          <h2 style={{ fontSize: "var(--text-lg)" }}>报名组别</h2>
+      <div className="card notch" style={{ padding: "var(--space-6)", marginBottom: "var(--space-6)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-5)" }}>
+          <h2 style={{ fontSize: "var(--text-lg)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".04em", color: "var(--color-text-secondary)" }}>报名组别</h2>
           <button type="button" className="btn-secondary" onClick={addGroup}>+ 添加组别</button>
         </div>
 
@@ -226,14 +226,15 @@ export function EventForm() {
           <div
             key={index}
             style={{
-              border: "1px solid var(--color-light-border)",
+              border: "1px solid var(--color-border)",
+              borderLeft: "4px solid var(--color-red)",
               borderRadius: "var(--radius-sm)",
               padding: "var(--space-4)",
               marginBottom: "var(--space-4)",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-3)" }}>
-              <h3 style={{ fontSize: "var(--text-base)" }}>组别 {index + 1}</h3>
+              <h3 style={{ fontSize: "var(--text-base)", fontFamily: "var(--font-display)", fontWeight: 700 }}>组别 {index + 1}</h3>
               {groups.length > 1 && (
                 <button type="button" className="btn-secondary" onClick={() => removeGroup(index)}>删除组别</button>
               )}
@@ -289,7 +290,7 @@ export function EventForm() {
         ))}
       </div>
 
-      {state.error && <p className="form-error" style={{ marginBottom: "var(--space-4)" }}>{state.error}</p>}
+      {state.error && <p className="form-error" style={{ marginBottom: "var(--space-4)", padding: "var(--space-3) var(--space-4)", background: "rgba(225,29,46,0.08)", borderRadius: "var(--radius-sm)", borderLeft: "4px solid var(--color-red)" }}>{state.error}</p>}
 
       <div>
         <button type="submit" className="btn-primary" disabled={pending}>

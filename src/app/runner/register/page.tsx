@@ -21,35 +21,11 @@ function RegisterForm() {
   const [state, formAction, pending] = useActionState(registerAction, initialState);
 
   return (
-    <section
-      className="section-dark"
-      style={{
-        minHeight: "100vh",
-        display: "grid",
-        placeItems: "center",
-        padding: "var(--space-8) var(--space-6)",
-        position: "relative",
-      }}
-    >
-      <Link
-        href="/"
-        style={{
-          position: "absolute",
-          top: "var(--space-6)",
-          left: "var(--space-6)",
-          fontFamily: "var(--font-mono)",
-          fontWeight: 700,
-          fontSize: "var(--text-xs)",
-          color: "var(--color-text-on-dark-muted)",
-        }}
-      >
-        ← 返回首页
-      </Link>
-      <div className="card" style={{ padding: "var(--space-10)", width: 560, maxWidth: "100%" }}>
-        <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
-          RUNNER PROFILE
-        </p>
-        <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-2)" }}>创建账号</h1>
+    <section className="section-dark auth-screen" style={{ padding: "var(--space-12) var(--space-6)" }}>
+      <Link href="/" className="auth-back">← 返回首页</Link>
+      <div className="auth-card notch" style={{ width: 560 }}>
+        <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>RUNNER PROFILE</p>
+        <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-2)", fontStyle: "italic" }}>创建账号</h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-8)" }}>
           注册后即可报名赛事，并随时查看报名状态。
         </p>
@@ -58,7 +34,7 @@ function RegisterForm() {
           <input type="hidden" name="redirect" value={redirectTo} />
 
           {state.error && (
-            <p className="form-error" style={{ marginBottom: "var(--space-4)", padding: "var(--space-3) var(--space-4)", background: "rgba(217,56,42,0.08)", borderRadius: "var(--radius-md)", border: "1px solid rgba(217,56,42,0.22)" }}>
+            <p className="form-error" style={{ marginBottom: "var(--space-4)", padding: "var(--space-3) var(--space-4)", background: "rgba(225,29,46,0.08)", borderRadius: "var(--radius-sm)", borderLeft: "4px solid var(--color-red)" }}>
               {state.error}
             </p>
           )}
@@ -123,7 +99,7 @@ function RegisterForm() {
 
         <p style={{ textAlign: "center", marginTop: "var(--space-6)", fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
           已有账号？{" "}
-          <Link href={`/runner/login${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`} style={{ color: "var(--color-primary)", fontWeight: 800 }}>
+          <Link href={`/runner/login${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`} style={{ color: "var(--color-red)", fontWeight: 800 }}>
             立即登录
           </Link>
         </p>
