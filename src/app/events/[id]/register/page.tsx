@@ -42,7 +42,7 @@ export default async function RegisterPage({
           <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>REGISTRATION FORM</p>
           <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)", fontStyle: "italic" }}>报名 · {event.title}</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)", fontSize: "var(--text-lg)" }}>
-            请核对个人信息并补充紧急联系人。提交后可在“我的报名”中查看状态。
+            请核对个人信息并补充紧急联系人。提交后可在“我的赛事”中查看状态。
           </p>
 
           <RegistrationForm eventId={event.id} groups={groups} defaultGroupId={groupId} runner={runner} />

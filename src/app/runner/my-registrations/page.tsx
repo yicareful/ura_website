@@ -14,9 +14,9 @@ export default async function MyRegistrationsPage() {
         <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
           <div className="container" style={{ maxWidth: 680 }}>
             <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>RUNNER ENTRIES</p>
-            <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)", fontStyle: "italic" }}>我的报名</h1>
+            <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)", fontStyle: "italic" }}>我的赛事</h1>
             <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)", fontSize: "var(--text-lg)" }}>
-              请先登录后查看报名记录。
+              请先登录后查看你的赛事。
             </p>
             <Link href="/runner/login?redirect=/runner/my-registrations" className="btn-primary">
               前往登录
@@ -42,7 +42,7 @@ export default async function MyRegistrationsPage() {
       <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
         <div className="container" style={{ maxWidth: 760 }}>
           <p className="eyebrow" style={{ marginBottom: "var(--space-3)" }}>RUNNER ENTRIES</p>
-          <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)", fontStyle: "italic" }}>我的报名</h1>
+          <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)", fontStyle: "italic" }}>我的赛事</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)", fontSize: "var(--text-lg)" }}>
             {runner.school} · {runner.name}，共有 {registrations.length} 条报名记录。
           </p>

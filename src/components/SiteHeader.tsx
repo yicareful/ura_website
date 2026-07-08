@@ -80,16 +80,15 @@ export async function SiteHeader({
 
           <nav style={{ display: "flex", gap: "var(--space-6)", fontSize: "var(--text-sm)", fontWeight: 700, alignItems: "center", flexWrap: "wrap", fontFamily: "var(--font-display)" }}>
             <Link href="/events" style={{ textTransform: "uppercase", letterSpacing: ".02em" }}>赛事</Link>
-            <Link href="/runner/my-registrations" style={{ textTransform: "uppercase", letterSpacing: ".02em" }}>我的报名</Link>
             <Link href="/admin" style={{ textTransform: "uppercase", letterSpacing: ".02em" }}>管理后台</Link>
           </nav>
 
           <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)", flexWrap: "wrap" }}>
             {runner ? (
-              <>
+              <div className="user-menu">
                 <Link
                   href="/runner/profile"
-                  className="header-runner-badge"
+                  className="header-runner-badge user-menu__chevron"
                   style={{
                     fontFamily: "var(--font-mono)",
                     fontSize: "var(--text-xs)",
@@ -105,27 +104,19 @@ export async function SiteHeader({
                   }}
                 >
                   {runner.school} · {runner.name}
+                  <span aria-hidden style={{ fontSize: "9px", opacity: .7 }}>▾</span>
                 </Link>
-                <form action={logoutAction} style={{ display: "inline" }}>
-                  <button
-                    type="submit"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "inherit",
-                      fontSize: "var(--text-sm)",
-                      fontWeight: 700,
-                      padding: 0,
-                      fontFamily: "var(--font-display)",
-                      textTransform: "uppercase",
-                      letterSpacing: ".02em",
-                    }}
-                  >
-                    退出
-                  </button>
-                </form>
-              </>
+                <div className="user-menu__panel" role="menu">
+                  <Link href="/runner/my-registrations" className="user-menu__item" role="menuitem">我的赛事</Link>
+                  <Link href="/runner/profile" className="user-menu__item" role="menuitem">个人信息</Link>
+                  <div className="user-menu__divider" aria-hidden />
+                  <form action={logoutAction} style={{ margin: 0 }}>
+                    <button type="submit" className="user-menu__item user-menu__item--danger" role="menuitem" style={{ width: "100%", background: "none", border: "none", textAlign: "left" }}>
+                      退出
+                    </button>
+                  </form>
+                </div>
+              </div>
             ) : (
               <Link href="/runner/login" style={{ fontWeight: 800, fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: ".02em", fontSize: "var(--text-base)" }}>登录</Link>
             )}

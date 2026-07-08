@@ -302,3 +302,91 @@ tbody tr:hover { background: rgba(21,180,198,.07); }
   .race-hero__actions,.btn-primary,.btn-secondary,.btn-ghost-dark { width: 100%; }
   .auth-card { padding: var(--space-8) var(--space-6); }
 }
+/* ---- User menu (header hover dropdown) ---- */
+.user-menu { position: relative; display: inline-block; }
+.user-menu__panel {
+  position: absolute; top: calc(100% + 10px); right: 0; min-width: 210px;
+  background: var(--color-surface); border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+  padding: var(--space-2); opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity var(--duration-fast) var(--ease-smooth), transform var(--duration-fast) var(--ease-smooth), visibility var(--duration-fast);
+  z-index: 60;
+}
+.user-menu__panel::before {
+  content: ""; position: absolute; top: -7px; right: 22px; width: 12px; height: 12px;
+  background: var(--color-surface); border-top: 1px solid var(--color-border-strong); border-left: 1px solid var(--color-border-strong);
+  transform: rotate(45deg); border-radius: 2px 0 0 0;
+}
+.user-menu:hover .user-menu__panel,
+.user-menu:focus-within .user-menu__panel { opacity: 1; visibility: visible; transform: translateY(0); }
+.user-menu__item {
+  display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm); font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm);
+  color: var(--color-text-primary); text-transform: uppercase; letter-spacing: .02em;
+  transition: background var(--duration-fast) var(--ease-smooth), color var(--duration-fast);
+}
+.user-menu__item:link,.user-menu__item:visited { color: var(--color-text-primary); }
+.user-menu__item:hover { background: var(--color-surface-2); }
+.user-menu__item--danger { color: var(--color-red); }
+.user-menu__item--danger:hover { background: rgba(225,29,46,0.08); }
+.user-menu__divider { height: 1px; background: var(--color-border); margin: var(--space-1) var(--space-2); }
+.user-menu__chevron { display: inline-flex; align-items: center; gap: var(--space-2); }
+
+/* ---- Finisher certificate ---- */
+.cert-wrap { padding: var(--space-12) var(--space-6) var(--space-16); }
+.cert-sheet {
+  position: relative; max-width: 960px; margin: 0 auto;
+  background: var(--color-surface); color: var(--color-asphalt);
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg);
+  padding: var(--space-10) var(--space-12); box-shadow: var(--shadow-xl); overflow: hidden;
+}
+.cert-sheet::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 8px;
+  background: linear-gradient(90deg, var(--color-red), var(--color-yellow) 42%, var(--color-blue));
+}
+.cert-sheet__ghost {
+  position: absolute; right: -2%; bottom: -8%; font-family: var(--font-display); font-style: italic;
+  font-weight: 800; font-size: clamp(10rem, 30vw, 26rem); color: rgba(11,13,16,.04);
+  letter-spacing: -.04em; line-height: .8; pointer-events: none; user-select: none;
+}
+.cert-sheet__grid {
+  position: absolute; inset: 8px 0 0 0; z-index: 0; pointer-events: none; opacity: .045;
+  background-image: linear-gradient(90deg, transparent 31px, var(--color-asphalt) 31px 32px), linear-gradient(180deg, transparent 31px, var(--color-asphalt) 31px 32px);
+  background-size: 32px 32px;
+}
+.cert-sheet__inner { position: relative; z-index: 1; }
+.cert-seal {
+  width: 116px; height: 116px; border-radius: 50%; border: 3px double var(--color-red);
+  display: grid; place-items: center; text-align: center; color: var(--color-red);
+  font-family: var(--font-mono); font-weight: 700; transform: rotate(-8deg);
+  background: radial-gradient(circle at 50% 40%, rgba(225,29,46,.06), transparent 70%);
+  flex-shrink: 0;
+}
+.cert-seal__mark { font-family: var(--font-display); font-style: italic; font-weight: 800; font-size: 2.6rem; line-height: 1; }
+.cert-seal__label { font-size: 8px; letter-spacing: .16em; margin-top: 2px; }
+.cert-stat { border-left: 3px solid var(--color-blue); padding: var(--space-3) var(--space-4); background: var(--color-surface-2); }
+.cert-stat:nth-child(2) { border-left-color: var(--color-red); }
+.cert-stat:nth-child(3) { border-left-color: var(--color-yellow); }
+.cert-stat:nth-child(4) { border-left-color: var(--color-asphalt); }
+.cert-stat__label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--color-text-secondary); }
+.cert-stat__value { font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; line-height: 1; margin-top: 6px; }
+.cert-bib {
+  display: inline-flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--color-border-strong); border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(90deg, var(--color-asphalt) 0 2px, transparent 2px 4px) bottom/auto 1px repeat-x;
+  background-color: var(--color-surface-2); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .04em;
+}
+@media print {
+  body { background: #fff; }
+  .cert-no-print { display: none !important; }
+  .cert-wrap { padding: 0; }
+  .cert-sheet { box-shadow: none; max-width: none; border-radius: 0; }
+}
+/* ---- Per-event: Jinan half-marathon certificate sheet ---- */
+.cert-jinan {
+  position: relative; max-width: 1000px; margin: 0 auto; overflow: hidden;
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-xl);
+}
+@media print {
+  .cert-jinan { box-shadow: none; max-width: none; border-radius: 0; }
+}

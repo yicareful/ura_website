@@ -36,7 +36,7 @@ export function HeroSection({
             </a>
             {runner ? (
               <a href="/runner/my-registrations" className="btn-ghost-dark">
-                查看我的报名
+                查看我的赛事
               </a>
             ) : (
               <a href="/runner/login" className="btn-ghost-dark">

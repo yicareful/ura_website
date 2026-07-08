@@ -1,4 +1,5 @@
-﻿import { notFound } from "next/navigation";
+﻿import Link from "next/link";
+import { notFound } from "next/navigation";
 import { getRegistrationById } from "@/lib/db";
 import { SiteHeader } from "@/components/SiteHeader";
 import { RegistrationStatusBadge } from "@/components/StatusBadge";
@@ -17,6 +18,7 @@ export default async function RegistrationDetailPage({
   if (!registration) notFound();
 
   const boundMarkAsPaid = markAsPaid.bind(null, registration.id);
+  const canCert = registration.event.status === "finished" && registration.status === "paid";
 
   return (
     <>
@@ -53,6 +55,31 @@ export default async function RegistrationDetailPage({
               <Field label="报名费" value={formatFee(registration.group.fee)} />
             </dl>
 
+            {canCert && (
+              <div
+                style={{
+                  marginTop: "var(--space-8)",
+                  paddingTop: "var(--space-6)",
+                  borderTop: "1px dashed var(--color-border-strong)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "var(--space-4)",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div>
+                  <div style={{ fontWeight: 800, fontFamily: "var(--font-display)", fontSize: "var(--text-xl)", fontStyle: "italic" }}>该赛事已完赛</div>
+                  <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", fontFamily: "var(--font-mono)", marginTop: "var(--space-1)" }}>
+                    你已完赛，可领取电子完赛证书。
+                  </p>
+                </div>
+                <Link href={`/registration/${registration.id}/certificate`} className="btn-primary">
+                  查看完赛证书
+                </Link>
+              </div>
+            )}
+
             {registration.status === "pending_payment" && (
               <div
                 style={{
@@ -72,7 +99,7 @@ export default async function RegistrationDetailPage({
               </div>
             )}
 
-            {registration.status === "paid" && (
+            {registration.status === "paid" && !canCert && (
               <div
                 style={{
                   marginTop: "var(--space-8)",
