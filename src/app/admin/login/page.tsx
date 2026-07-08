@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import Link from "next/link";
@@ -11,12 +11,12 @@ export default function AdminLoginPage() {
 
   return (
     <section
+      className="section-dark"
       style={{
         minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "var(--color-light-base)",
+        display: "grid",
+        placeItems: "center",
+        padding: "var(--space-6)",
         position: "relative",
       }}
     >
@@ -26,21 +26,21 @@ export default function AdminLoginPage() {
           position: "absolute",
           top: "var(--space-6)",
           left: "var(--space-6)",
-          fontFamily: "var(--font-display)",
-          fontWeight: 600,
-          fontSize: "var(--text-sm)",
-          color: "var(--color-text-secondary)",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "var(--space-1)",
+          fontFamily: "var(--font-mono)",
+          fontWeight: 700,
+          fontSize: "var(--text-xs)",
+          color: "var(--color-text-on-dark-muted)",
         }}
       >
-        ← 回到首页
+        ← 返回首页
       </Link>
-      <div className="card" style={{ padding: "var(--space-10)", width: 380 }}>
-        <h1 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-1)" }}>管理后台</h1>
+      <div className="card" style={{ padding: "var(--space-10)", width: 400, maxWidth: "100%" }}>
+        <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+          OPERATOR ACCESS
+        </p>
+        <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-2)" }}>管理后台</h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-8)" }}>
-          简易验证 · 非生产级安全方案，仅用于原型演示
+          简易验证，仅用于原型演示。
         </p>
 
         <form action={formAction}>
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
           {state.error && <p className="form-error" style={{ marginBottom: "var(--space-4)" }}>{state.error}</p>}
 
           <button type="submit" className="btn-primary" style={{ width: "100%" }} disabled={pending}>
-            {pending ? "验证中…" : "进入管理后台"}
+            {pending ? "验证中..." : "进入管理后台"}
           </button>
         </form>
       </div>

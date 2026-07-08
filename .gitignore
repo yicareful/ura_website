@@ -1,6 +1,9 @@
 # Claude
 .claude/
 
+# Codex
+.codex/
+
 # References
 references/
 

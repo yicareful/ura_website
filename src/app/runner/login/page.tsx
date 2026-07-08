@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useActionState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -22,12 +22,12 @@ function LoginForm() {
 
   return (
     <section
+      className="section-dark"
       style={{
         minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "var(--color-light-base)",
+        display: "grid",
+        placeItems: "center",
+        padding: "var(--space-6)",
         position: "relative",
       }}
     >
@@ -37,21 +37,21 @@ function LoginForm() {
           position: "absolute",
           top: "var(--space-6)",
           left: "var(--space-6)",
-          fontFamily: "var(--font-display)",
-          fontWeight: 600,
-          fontSize: "var(--text-sm)",
-          color: "var(--color-text-secondary)",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "var(--space-1)",
+          fontFamily: "var(--font-mono)",
+          fontWeight: 700,
+          fontSize: "var(--text-xs)",
+          color: "var(--color-text-on-dark-muted)",
         }}
       >
-        返回首页
+        ← 返回首页
       </Link>
-      <div className="card" style={{ padding: "var(--space-10)", width: 380 }}>
-        <h1 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-1)" }}>选手登录</h1>
+      <div className="card" style={{ padding: "var(--space-10)", width: 400, maxWidth: "100%" }}>
+        <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+          RUNNER ACCESS
+        </p>
+        <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-2)" }}>选手登录</h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-8)" }}>
-          使用手机号和密码登录
+          使用手机号和密码进入报名中心。
         </p>
 
         <form action={formAction}>
@@ -76,7 +76,7 @@ function LoginForm() {
 
         <p style={{ textAlign: "center", marginTop: "var(--space-6)", fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
           还没有账号？{" "}
-          <Link href={`/runner/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`} style={{ color: "var(--color-primary)", fontWeight: 600 }}>
+          <Link href={`/runner/register${redirectTo ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`} style={{ color: "var(--color-primary)", fontWeight: 800 }}>
             立即注册
           </Link>
         </p>

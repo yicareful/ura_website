@@ -1,4 +1,4 @@
-export function formatFee(feeInCents: number) {
+﻿export function formatFee(feeInCents: number) {
   return `¥${(feeInCents / 100).toFixed(0)}`;
 }
 

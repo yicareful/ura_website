@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getEventsForAdmin } from "@/lib/db";
 import { EventStatusBadge } from "@/components/StatusBadge";
 import { formatDate } from "@/lib/format";
@@ -8,8 +8,13 @@ export default async function AdminEventsPage() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-8)" }}>
-        <h1 style={{ fontSize: "var(--text-3xl)" }}>赛事管理</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: "var(--space-6)", marginBottom: "var(--space-8)", flexWrap: "wrap" }}>
+        <div>
+          <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+            EVENT OPERATIONS
+          </p>
+          <h1 style={{ fontSize: "var(--text-5xl)" }}>赛事管理</h1>
+        </div>
         <Link href="/admin/events/new" className="btn-primary">
           新建赛事
         </Link>
@@ -31,7 +36,7 @@ export default async function AdminEventsPage() {
           <tbody>
             {events.map((event) => (
               <tr key={event.id}>
-                <td>{event.title}</td>
+                <td style={{ fontWeight: 700 }}>{event.title}</td>
                 <td>{event.city}</td>
                 <td>{formatDate(event.eventDate)}</td>
                 <td>

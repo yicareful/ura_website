@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { getEventById } from "@/lib/db";
 import { requireRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -37,11 +37,14 @@ export default async function RegisterPage({
   return (
     <>
       <SiteHeader showBackHome />
-      <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
-        <div className="container" style={{ maxWidth: 640 }}>
-          <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>报名 · {event.title}</h1>
-          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
-            请如实填写个人信息，提交后可在“我的报名”中随时查看状态。
+      <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
+        <div className="container" style={{ maxWidth: 760 }}>
+          <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+            REGISTRATION FORM
+          </p>
+          <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)" }}>报名 · {event.title}</h1>
+          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)", fontSize: "var(--text-lg)" }}>
+            请核对个人信息并补充紧急联系人。提交后可在“我的报名”中查看状态。
           </p>
 
           <RegistrationForm eventId={event.id} groups={groups} defaultGroupId={groupId} runner={runner} />

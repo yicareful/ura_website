@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -11,10 +11,10 @@ export default async function MyRegistrationsPage() {
     return (
       <>
         <SiteHeader showBackHome />
-        <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
-          <div className="container" style={{ maxWidth: 640 }}>
-            <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-3)" }}>我的报名</h1>
-            <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)" }}>
+        <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
+          <div className="container" style={{ maxWidth: 680 }}>
+            <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)" }}>我的报名</h1>
+            <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)", fontSize: "var(--text-lg)" }}>
               请先登录后查看报名记录。
             </p>
             <Link href="/runner/login?redirect=/runner/my-registrations" className="btn-primary">
@@ -38,11 +38,14 @@ export default async function MyRegistrationsPage() {
   return (
     <>
       <SiteHeader showBackHome />
-      <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
-        <div className="container" style={{ maxWidth: 640 }}>
-          <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-2)" }}>我的报名</h1>
-          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
-            {runner.school} · {runner.name}，共有 {registrations.length} 条报名记录
+      <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
+        <div className="container" style={{ maxWidth: 760 }}>
+          <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+            RUNNER ENTRIES
+          </p>
+          <h1 style={{ fontSize: "var(--text-5xl)", marginBottom: "var(--space-3)" }}>我的报名</h1>
+          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)", fontSize: "var(--text-lg)" }}>
+            {runner.school} · {runner.name}，共有 {registrations.length} 条报名记录。
           </p>
 
           {registrations.length === 0 ? (
@@ -70,15 +73,16 @@ export default async function MyRegistrationsPage() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    gap: "var(--space-4)",
                     padding: "var(--space-5) var(--space-6)",
                   }}
                 >
                   <div>
-                    <div style={{ fontWeight: 600 }}>{r.event.title}</div>
+                    <div style={{ fontWeight: 800 }}>{r.event.title}</div>
                     <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
                       {r.group.name}
                     </div>
-                    <div style={{ color: "var(--color-text-muted)", fontSize: "var(--text-xs)", marginTop: "var(--space-1)" }}>
+                    <div style={{ color: "var(--color-text-muted)", fontSize: "var(--text-xs)", marginTop: "var(--space-1)", fontFamily: "var(--font-mono)" }}>
                       报名编号：{r.id.slice(0, 8)}...
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-import { getEvents } from "@/lib/db";
+﻿import { getEvents } from "@/lib/db";
 import { SiteHeader } from "@/components/SiteHeader";
 import { EventCard } from "@/components/EventCard";
 
@@ -8,15 +8,20 @@ export default async function EventsPage() {
   return (
     <>
       <SiteHeader showBackHome />
-      <section style={{ padding: "calc(var(--header-h) + var(--space-12)) 0 var(--space-24)" }}>
+      <section style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
         <div className="container">
-          <h1 style={{ fontSize: "var(--text-4xl)", marginBottom: "var(--space-3)" }}>全部赛事</h1>
-          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-10)" }}>
-            浏览所有已发布的长跑赛事，选择适合的报名组别。
-          </p>
+          <div style={{ maxWidth: 760, marginBottom: "var(--space-12)" }}>
+            <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+              EVENT BOARD
+            </p>
+            <h1 style={{ fontSize: "var(--text-6xl)", marginBottom: "var(--space-4)" }}>全部赛事</h1>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-lg)" }}>
+              浏览已发布的长跑赛事，进入详情后选择适合的报名组别。
+            </p>
+          </div>
 
           {events.length === 0 ? (
-            <p style={{ color: "var(--color-text-secondary)" }}>暂无赛事。</p>
+            <div className="card" style={{ padding: "var(--space-8)", color: "var(--color-text-secondary)" }}>暂无赛事。</div>
           ) : (
             <div
               style={{

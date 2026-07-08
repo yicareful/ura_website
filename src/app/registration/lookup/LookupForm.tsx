@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export function LookupForm() {
   }
 
   return (
-    <div>
+    <div className="card" style={{ padding: "var(--space-8)" }}>
       <form action={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
@@ -57,7 +57,7 @@ export function LookupForm() {
                   }}
                 >
                   <div>
-                    <div style={{ fontWeight: 600 }}>{r.eventTitle}</div>
+                    <div style={{ fontWeight: 700 }}>{r.eventTitle}</div>
                     <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
                       {r.groupName}
                     </div>

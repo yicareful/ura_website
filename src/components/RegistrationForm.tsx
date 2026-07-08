@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { submitRegistration, type RegisterFormState } from "@/app/events/[id]/register/actions";
@@ -45,16 +45,16 @@ export function RegistrationForm({
   const [state, formAction, pending] = useActionState(boundAction, initialState);
 
   return (
-    <form action={formAction}>
+    <form action={formAction} className="card" style={{ padding: "var(--space-8)" }}>
       {state?.error && (
         <div
           className="form-error"
           style={{
             marginBottom: "var(--space-5)",
             padding: "var(--space-3) var(--space-4)",
-            background: "rgba(239,68,68,0.08)",
-            borderRadius: "var(--radius-sm)",
-            border: "1px solid rgba(239,68,68,0.2)",
+            background: "rgba(217,56,42,0.08)",
+            borderRadius: "var(--radius-md)",
+            border: "1px solid rgba(217,56,42,0.22)",
           }}
         >
           {state.error}
@@ -69,8 +69,7 @@ export function RegistrationForm({
             <option key={g.id} value={g.id} disabled={g.remaining <= 0}>
               {g.name}（{g.distance}km，{g.startTime}-{g.cutoffTime}，{GENDER_LABEL[g.gender] ?? g.gender}，
               {formatAgeRange(g.minAge, g.maxAge)}，{formatFee(g.fee)}，
-              {g.remaining <= 0 ? "已满" : `剩余${g.remaining}`}
-              ）
+              {g.remaining <= 0 ? "已满" : `剩余${g.remaining}`}）
             </option>
           ))}
         </select>
@@ -79,11 +78,11 @@ export function RegistrationForm({
       <div className="form-row">
         <div className="form-group">
           <label className="form-label" htmlFor="name">姓名 *</label>
-          <input className="form-input" id="name" name="name" defaultValue={runner.name} readOnly style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
+          <input className="form-input" id="name" name="name" defaultValue={runner.name} readOnly />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="gender">性别 *</label>
-          <select className="form-select" id="gender" name="gender" defaultValue={runner.gender} disabled style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }}>
+          <select className="form-select" id="gender" name="gender" defaultValue={runner.gender} disabled>
             <option value="male">男</option>
             <option value="female">女</option>
           </select>
@@ -93,11 +92,11 @@ export function RegistrationForm({
       <div className="form-row">
         <div className="form-group">
           <label className="form-label" htmlFor="idCard">身份证号 *</label>
-          <input className="form-input" id="idCard" name="idCard" defaultValue={runner.idCard} readOnly maxLength={18} style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
+          <input className="form-input" id="idCard" name="idCard" defaultValue={runner.idCard} readOnly maxLength={18} />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="phone">手机号 *</label>
-          <input className="form-input" id="phone" name="phone" defaultValue={runner.phone} readOnly maxLength={11} style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
+          <input className="form-input" id="phone" name="phone" defaultValue={runner.phone} readOnly maxLength={11} />
         </div>
       </div>
 
@@ -109,7 +108,7 @@ export function RegistrationForm({
       <div className="form-row">
         <div className="form-group">
           <label className="form-label" htmlFor="school">学校 *</label>
-          <input className="form-input" id="school" name="school" defaultValue={runner.school} readOnly style={{ background: "var(--color-light-base)", color: "var(--color-text-muted)" }} />
+          <input className="form-input" id="school" name="school" defaultValue={runner.school} readOnly />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="major">院系/专业</label>

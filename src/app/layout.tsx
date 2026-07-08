@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "URA — 山东省大学生长跑联盟",
-  description: "山东省大学生长跑IP赛事官方报名与管理平台",
+  title: "URA | 山东省大学生长跑赛事平台",
+  description: "山东省大学生长跑 IP 赛事官方报名与管理平台",
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700;800&display=swap"
           rel="stylesheet"
         />
       </head>

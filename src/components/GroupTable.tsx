@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { GENDER_LABEL } from "@/lib/constants";
 import { formatAgeRange, formatFee } from "@/lib/format";
 
@@ -48,7 +48,7 @@ export function GroupTable({
             const isFull = remaining <= 0 || !group.isOpen;
             return (
               <tr key={group.id}>
-                <td>{group.name}</td>
+                <td style={{ fontWeight: 700 }}>{group.name}</td>
                 <td>{group.distance} km</td>
                 <td>{group.startTime}</td>
                 <td>{group.cutoffTime}</td>
@@ -72,7 +72,7 @@ export function GroupTable({
                       <Link
                         href={`/events/${eventId}/register?groupId=${group.id}`}
                         className="btn-secondary"
-                        style={{ padding: "var(--space-1) var(--space-4)", fontSize: "var(--text-sm)" }}
+                        style={{ padding: "var(--space-2) var(--space-4)", fontSize: "var(--text-sm)", minHeight: 34 }}
                       >
                         报名
                       </Link>

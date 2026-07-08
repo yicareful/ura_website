@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { EventStatusBadge } from "./StatusBadge";
 
 type EventCardProps = {
@@ -28,46 +28,47 @@ export function EventCard({
     day: "numeric",
   }).format(eventDate);
 
+  const serial = String(index + 1).padStart(2, "0");
+
   return (
     <Link
       href={`/events/${id}`}
-      className="card stagger-enter visible"
+      className="card event-card stagger-enter visible"
       style={{
-        display: "block",
-        padding: "var(--space-6)",
+        display: "grid",
+        gridTemplateRows: "auto 1fr auto",
+        padding: "var(--space-6) var(--space-6) var(--space-5) var(--space-8)",
         transitionDelay: `${index * 80}ms`,
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "var(--space-4)" }}>
-        <span
-          style={{
-            fontSize: "var(--text-xs)",
-            fontWeight: 600,
-            color: "var(--color-primary)",
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-          }}
-        >
-          {city}
-        </span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--space-4)", marginBottom: "var(--space-6)" }}>
+        <div style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)" }}>
+          CHECKPOINT {serial} / {city}
+        </div>
         <EventStatusBadge status={status} />
       </div>
-      <h3 style={{ fontSize: "var(--text-2xl)", marginBottom: "var(--space-3)" }}>{title}</h3>
-      <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", marginBottom: "var(--space-5)" }}>
-        {dateLabel}
-      </p>
+
+      <div>
+        <h3 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-3)", maxWidth: "13ch" }}>{title}</h3>
+        <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", fontFamily: "var(--font-mono)" }}>
+          {dateLabel}
+        </p>
+      </div>
+
       <div
         style={{
-          display: "flex",
-          gap: "var(--space-6)",
-          paddingTop: "var(--space-4)",
-          borderTop: "1px solid var(--color-light-border)",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "var(--space-4)",
+          paddingTop: "var(--space-5)",
+          marginTop: "var(--space-6)",
+          borderTop: "1px dashed var(--color-border-strong)",
           fontSize: "var(--text-sm)",
           color: "var(--color-text-secondary)",
         }}
       >
-        <span>{groupCount} 个组别</span>
-        <span>{registrationCount} 人已报名</span>
+        <span><strong style={{ color: "var(--color-text-primary)" }}>{groupCount}</strong> 个组别</span>
+        <span><strong style={{ color: "var(--color-text-primary)" }}>{registrationCount}</strong> 人报名</span>
       </div>
     </Link>
   );

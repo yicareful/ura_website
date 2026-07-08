@@ -1,4 +1,4 @@
-import { getEvents } from "@/lib/db";
+﻿import { getEvents } from "@/lib/db";
 import { getCurrentRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HeroSection } from "@/components/HeroSection";
@@ -24,17 +24,24 @@ export default async function HomePage() {
         runner={runner}
       />
 
-      <section className="section-light" style={{ padding: "var(--space-24) 0" }}>
+      <section className="section-light" style={{ padding: "var(--space-20) 0 var(--space-24)" }}>
         <div className="container">
-          <div style={{ marginBottom: "var(--space-10)", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <h2 style={{ fontSize: "var(--text-3xl)" }}>近期赛事</h2>
-            <a href="/events" style={{ color: "var(--color-primary)", fontWeight: 600, fontSize: "var(--text-sm)" }}>
-              查看全部 →
+          <div style={{ marginBottom: "var(--space-10)", display: "flex", justifyContent: "space-between", alignItems: "end", gap: "var(--space-6)", flexWrap: "wrap" }}>
+            <div>
+              <p style={{ fontFamily: "var(--font-mono)", color: "var(--color-blue)", fontWeight: 700, fontSize: "var(--text-xs)", marginBottom: "var(--space-2)" }}>
+                OPEN RACE WINDOWS
+              </p>
+              <h2 style={{ fontSize: "var(--text-5xl)" }}>近期赛事</h2>
+            </div>
+            <a href="/events" className="btn-secondary">
+              查看全部赛事
             </a>
           </div>
 
           {events.length === 0 ? (
-            <p style={{ color: "var(--color-text-secondary)" }}>暂无赛事，请稍后再来查看。</p>
+            <div className="card" style={{ padding: "var(--space-8)", color: "var(--color-text-secondary)" }}>
+              暂无赛事，请稍后再来查看。
+            </div>
           ) : (
             <div
               style={{

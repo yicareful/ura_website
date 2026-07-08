@@ -1,4 +1,4 @@
-export const REGISTRATION_STATUS = {
+﻿export const REGISTRATION_STATUS = {
   PENDING_PAYMENT: "pending_payment",
   PAID: "paid",
   CANCELLED: "cancelled",
