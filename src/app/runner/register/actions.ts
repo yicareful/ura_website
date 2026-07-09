@@ -8,6 +8,17 @@ import { hashPassword, createSessionToken } from "@/lib/runner-auth";
 
 export type RegisterFormState = {
   error?: string;
+  fieldErrors?: {
+    name?: string;
+    gender?: string;
+    idCard?: string;
+    phone?: string;
+    email?: string;
+    school?: string;
+    major?: string;
+    password?: string;
+    confirmPassword?: string;
+  };
 };
 
 export async function registerAction(
@@ -25,28 +36,23 @@ export async function registerAction(
   const confirmPassword = String(formData.get("confirmPassword") || "");
   const redirectTo = String(formData.get("redirect") || "");
 
-  if (!name || !gender || !idCard || !phone || !school || !password) {
-    return { error: "请完整填写所有必填项" };
-  }
+  const fieldErrors: RegisterFormState["fieldErrors"] = {};
 
-  if (!/^\d{17}[\dXx]$/.test(idCard)) {
-    return { error: "身份证号格式不正确" };
-  }
+  if (!name) fieldErrors.name = "请输入姓名";
+  if (!gender) fieldErrors.gender = "请选择性别";
+  if (!idCard) fieldErrors.idCard = "请输入身份证号";
+  else if (!/^\d{17}[\dXx]$/.test(idCard)) fieldErrors.idCard = "身份证号格式不正确（18位）";
+  if (!phone) fieldErrors.phone = "请输入手机号";
+  else if (!/^1\d{10}$/.test(phone)) fieldErrors.phone = "手机号格式不正确";
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fieldErrors.email = "邮箱格式不正确";
+  if (!school) fieldErrors.school = "请输入学校名称";
+  if (!password) fieldErrors.password = "请输入密码";
+  else if (password.length < 6) fieldErrors.password = "密码不能少于6位";
+  if (!confirmPassword) fieldErrors.confirmPassword = "请再次输入密码";
+  else if (password !== confirmPassword) fieldErrors.confirmPassword = "两次输入的密码不一致";
 
-  if (!/^1\d{10}$/.test(phone)) {
-    return { error: "手机号格式不正确" };
-  }
-
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { error: "邮箱格式不正确" };
-  }
-
-  if (password.length < 6) {
-    return { error: "密码长度不能少于6位" };
-  }
-
-  if (password !== confirmPassword) {
-    return { error: "两次输入的密码不一致" };
+  if (Object.keys(fieldErrors).length > 0) {
+    return { error: "请修正表单中的错误", fieldErrors };
   }
 
   const existing = await prisma.runner.findUnique({
