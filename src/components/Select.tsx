@@ -109,28 +109,13 @@ export function Select({
       style={{ position: "relative", userSelect: "none" }}
       onKeyDown={onKeyDown}
     >
-      {/* Hidden native select for form submission */}
-      <select
+      {/* Hidden native input for form submission */}
+      <input
+        type="hidden"
         name={name}
-        required={required}
-        disabled={disabled}
         value={value ?? ""}
-        onChange={() => {}}
-        tabIndex={-1}
-        aria-hidden
-        style={{
-          position: "absolute",
-          width: 1,
-          height: 1,
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      >
-        <option value="" />
-        {options.map((o) => (
-          <option key={o.value} value={o.value} disabled={o.disabled} />
-        ))}
-      </select>
+        disabled={disabled}
+      />
 
       {/* Trigger button */}
       <button

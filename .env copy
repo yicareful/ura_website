@@ -1,0 +1,10 @@
+DATABASE_URL="file:./dev.db"
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# 阿里云短信服务（短信验证码）
+ALI_ACCESS_KEY_ID=
+ALI_ACCESS_KEY_SECRET=
+ALI_SMS_SIGN=
+ALI_SMS_TEMPLATE=

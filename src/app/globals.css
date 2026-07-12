@@ -309,12 +309,28 @@ tbody tr:hover { background: rgba(21,180,198,.07); }
 
 /* ---- Auth screen ---- */
 .auth-screen { position: relative; min-height: 100vh; display: grid; place-items: center; padding: var(--space-6); overflow: hidden; }
+.auth-screen::after {
+  content: "URA";
+  position: absolute;
+  right: -2%;
+  bottom: -5%;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: italic;
+  font-size: clamp(7rem, 20vw, 22rem);
+  color: rgba(255,255,255,.035);
+  letter-spacing: -.04em;
+  line-height: .8;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
 .auth-screen::before {
   content: ""; position: absolute; inset: -20% -12%; transform: rotate(-14deg);
   background: repeating-linear-gradient(90deg, transparent 0 72px, rgba(255,255,255,.07) 72px 76px);
-  clip-path: polygon(60% 0, 100% 0, 100% 100%, 24% 100%); opacity: .6;
+  clip-path: polygon(55% 0, 100% 0, 100% 100%, 20% 100%); opacity: .5; z-index: 0;
 }
-.auth-card { position: relative; padding: var(--space-10); width: 100%; border: 1px solid rgba(255,255,255,.14); background: var(--color-surface); color: var(--color-text-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); }
+.auth-card { position: relative; z-index: 1; padding: var(--space-10); width: 100%; border: 1px solid rgba(255,255,255,.14); background: var(--color-surface); color: var(--color-text-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); }
 .auth-back { position: absolute; top: var(--space-6); left: var(--space-6); font-family: var(--font-mono); font-weight: 700; font-size: var(--text-xs); color: var(--color-text-on-dark-muted); z-index: 2; transition: color var(--duration-fast) var(--ease-smooth); }
 .auth-back:hover { color: var(--color-yellow); }
 .auth-card--dark { background: var(--color-asphalt-2); border-color: rgba(255,255,255,.1); color: var(--color-text-on-dark); }
