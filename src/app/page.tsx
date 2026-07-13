@@ -3,6 +3,7 @@ import { getCurrentRunner } from "@/lib/runner-auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HeroSection } from "@/components/HeroSection";
 import { EventCard } from "@/components/EventCard";
+import { NewsSection } from "@/components/NewsSection";
 
 export default async function HomePage() {
   const events = await getEvents();
@@ -65,6 +66,8 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      <NewsSection />
     </>
   );
 }

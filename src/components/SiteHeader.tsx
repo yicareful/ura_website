@@ -80,6 +80,7 @@ export async function SiteHeader({
 
           <nav style={{ display: "flex", gap: "var(--space-6)", fontSize: "var(--text-sm)", fontWeight: 700, alignItems: "center", flexWrap: "wrap", fontFamily: "var(--font-display)" }}>
             <Link href="/events" style={{ textTransform: "uppercase", letterSpacing: ".02em" }}>赛事</Link>
+            <Link href="/news" style={{ textTransform: "uppercase", letterSpacing: ".02em" }}>新闻</Link>
             <Link href="/admin" style={{ textTransform: "uppercase", letterSpacing: ".02em" }}>管理后台</Link>
           </nav>
 
