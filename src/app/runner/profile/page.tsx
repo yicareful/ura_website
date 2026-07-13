@@ -21,7 +21,12 @@ export default async function ProfilePage() {
           </p>
 
           <div className="card notch" style={{ padding: "var(--space-8)" }}>
-            <h2 style={{ fontSize: "var(--text-lg)", marginBottom: "var(--space-6)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".04em", color: "var(--color-text-secondary)" }}>基本信息</h2>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-4)", marginBottom: "var(--space-6)" }}>
+              <h2 style={{ fontSize: "var(--text-lg)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".04em", color: "var(--color-text-secondary)" }}>基本信息</h2>
+              <span title="URA ID（不可更改）" style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", fontWeight: 700, letterSpacing: ".04em", color: "var(--color-text-secondary)", padding: "var(--space-2) var(--space-3)", border: "1px solid var(--color-asphalt)", borderRadius: "var(--radius-sm)", background: "var(--color-surface)", whiteSpace: "nowrap" }}>
+                URA ID <span style={{ color: "var(--color-red)", letterSpacing: ".08em" }}>{String(runner.uraId ?? "").padStart(5, "0")}</span>
+              </span>
+            </div>
             <div className="form-row" style={{ marginBottom: "var(--space-5)" }}>
               <InfoField label="姓名" value={runner.name} />
               <InfoField label="性别" value={runner.gender === "male" ? "男" : "女"} />

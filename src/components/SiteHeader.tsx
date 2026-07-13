@@ -110,6 +110,10 @@ export async function SiteHeader({
                   <Link href="/runner/my-registrations" className="user-menu__item" role="menuitem">我的赛事</Link>
                   <Link href="/runner/profile" className="user-menu__item" role="menuitem">个人信息</Link>
                   <div className="user-menu__divider" aria-hidden />
+                  <div style={{ padding: "var(--space-2) var(--space-4)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "var(--space-3)", fontFamily: "var(--font-mono)", color: "var(--color-text-secondary)" }}>
+                    <span style={{ fontSize: "var(--text-xs)", letterSpacing: ".04em" }}>URA ID</span>
+                    <span style={{ fontSize: "var(--text-sm)", fontWeight: 700, letterSpacing: ".08em", color: "var(--color-red)" }}>{String(runner.uraId ?? "").padStart(5, "0")}</span>
+                  </div>
                   <form action={logoutAction} style={{ margin: 0 }}>
                     <button type="submit" className="user-menu__item user-menu__item--danger" role="menuitem" style={{ width: "100%", background: "none", border: "none", textAlign: "left" }}>
                       退出

@@ -6,6 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { RUNNER_SESSION_COOKIE } from "@/lib/constants";
 import { hashPassword, createSessionToken } from "@/lib/runner-auth";
 import { getRegTempToken, delRegTempToken } from "@/lib/redis";
+import { generateUniqueUraId } from "@/lib/ura-id";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export type ProfileFormState = {
   error?: string;
@@ -92,19 +94,35 @@ export async function completeProfile(
     : hashPassword(Math.random().toString(36).slice(2));
   const sessionToken = createSessionToken();
 
-  await prisma.runner.create({
-    data: {
-      phone,
-      password: passwordHash,
-      name,
-      gender,
-      idCard,
-      email: email || null,
-      school,
-      major: major || null,
-      sessionToken,
-    },
-  });
+  // 创建用户，URA ID 若因并发撞库返回 P2002 则自动重试
+  for (let attempt = 0; attempt < 10; attempt++) {
+    try {
+      await prisma.runner.create({
+        data: {
+          phone,
+          password: passwordHash,
+          name,
+          uraId: await generateUniqueUraId(),
+          gender,
+          idCard,
+          email: email || null,
+          school,
+          major: major || null,
+          sessionToken,
+        },
+      });
+      break;
+    } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError && e.code === "P2002" &&
+          Array.isArray(e.meta?.target) && (e.meta.target as string[]).includes("uraId")) {
+        if (attempt === 9) {
+          return { error: "系统繁忙，无法分配 URA ID，请稍后重试", prevValues: { name, gender, idCard, school, major, email, password, confirmPassword } };
+        }
+        continue; // uraId 撞库，重新生成再试
+      }
+      throw e; // 其它错误正常抛出
+    }
+  }
 
   // 删除临时令牌（用完即焚）
   await delRegTempToken(tempToken);

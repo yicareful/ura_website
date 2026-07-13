@@ -8,9 +8,9 @@ datasource db {
 }
 
 model Event {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   title       String
-  slug        String   @unique
+  slug        String  @unique
   description String
   city        String
   location    String
@@ -44,7 +44,7 @@ model Group {
   minAge   Int?
   maxAge   Int?
   capacity Int
-  fee      Int // 单位：分
+  fee      Int // unit: fen
   isOpen   Boolean @default(true)
 
   createdAt DateTime @default(now())
@@ -54,15 +54,16 @@ model Group {
 }
 
 model Runner {
-  id        String @id @default(cuid())
-  phone     String @unique
-  password  String // scrypt-hashed: "salt:hash"
-  name      String
-  gender    String
-  idCard    String
-  email     String?
-  school    String
-  major     String?
+  id       String  @id @default(cuid())
+  phone    String  @unique
+  password String // scrypt-hashed: salt:hash
+  name     String
+  uraId    Int?    @unique // 5-digit random URA ID, immutable by user
+  gender   String
+  idCard   String
+  email    String?
+  school   String
+  major    String?
 
   sessionToken String? @unique
 
@@ -76,6 +77,7 @@ model Registration {
   id      String @id @default(cuid())
   eventId String
   event   Event  @relation(fields: [eventId], references: [id])
+
   groupId String
   group   Group  @relation(fields: [groupId], references: [id])
 
@@ -87,8 +89,8 @@ model Registration {
   school String
   major  String?
 
-  runnerId  String?
-  runner    Runner?  @relation(fields: [runnerId], references: [id])
+  runnerId String?
+  runner   Runner? @relation(fields: [runnerId], references: [id])
 
   emergencyContact String
   emergencyPhone   String

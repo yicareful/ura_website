@@ -60,6 +60,7 @@ async function main() {
       idCard: "370102199801011234",
       phone: "13800138001",
       school: "山东大学",
+      uraId: 13801,
       password: hashPassword("123456"),
     },
   });
@@ -71,6 +72,7 @@ async function main() {
       idCard: "370202200001022345",
       phone: "13800138002",
       school: "山东师范大学",
+      uraId: 24917,
       password: hashPassword("123456"),
     },
   });
