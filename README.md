@@ -24,7 +24,8 @@
 ## 技术栈
 
 - **框架**：Next.js 15（App Router）+ React 19，Server Components 负责数据展示，Server Actions 负责表单提交与数据变更，Route Handlers 负责短信验证码 API
-- **数据库**：SQLite + Prisma ORM 6
+- **数据库**：MySQL 8 + Prisma ORM 6
+- **运行环境**：Node.js ≥ 20 + npm；MySQL 8 / Redis 6 可经 Docker Compose 一键启动（见 `requirements.txt` 与 `docker-compose.yaml`）
 - **缓存 / 验证码存储**：Redis（ioredis），用于短信验证码存取、发送频率限制与注册临时令牌
 - **短信服务**：阿里云短信（`@alicloud/dysmsapi20170525`），未配置时自动回退为开发控制台输出
 - **认证**：Cookie + scrypt 哈希（Node.js `crypto` 内置模块），手机号 + 短信验证码为主、密码登录为辅
@@ -196,7 +197,7 @@ src/
     └── format.ts                 # 费用 / 日期 / 年龄区间格式化
 prisma/
 ├── schema.prisma                 # 数据模型
-└── migrations/                   # 迁移文件（init / flatten_groups / add_runner_ura_id）
+└── migrations/                   # 迁移文件（init · MySQL）
 seed.ts                           # 种子数据脚本
 ```
 
@@ -211,65 +212,103 @@ seed.ts                           # 种子数据脚本
 
 ## 本地部署
 
-### 1. 安装依赖
+全新环境所需运行时与中间件见 [`requirements.txt`](./requirements.txt)（Node.js ≥ 20、MySQL ≥ 8、Redis ≥ 6、可选 Docker）。npm 项目依赖见 `package.json`，执行 `npm install` 安装。
+
+### 1. 安装项目依赖
 
 ```bash
 npm install
 ```
 
-### 2. 配置环境变量
+### 2. 启动中间件 MySQL + Redis
 
-在项目根目录创建 `.env` 文件：
+#### 方式 A：本机原生安装（推荐，无需 Docker）
 
+**1) MySQL**（从 https://dev.mysql.com/downloads 下载安装）。登录后建库建用户：
+
+```sql
+CREATE DATABASE IF NOT EXISTS ura_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'ura_user'@'localhost' IDENTIFIED BY 'ura_pass_2026';
+CREATE USER IF NOT EXISTS 'ura_user'@'%'         IDENTIFIED BY 'ura_pass_2026';
+GRANT ALL PRIVILEGES ON ura_db.* TO 'ura_user'@'localhost';
+GRANT ALL PRIVILEGES ON ura_db.* TO 'ura_user'@'%';
+FLUSH PRIVILEGES;
 ```
-DATABASE_URL="file:./dev.db"
-ADMIN_SECRET="你选择的管理密钥"
 
-# Redis（短信验证码存储 / 频率限制 / 注册临时令牌）
-REDIS_URL=redis://localhost:6379
+> MySQL 的 root 密码请按本机实际设置；`.env` 中的 `DATABASE_URL` 用 `ura_user` 账号即可，不用 root。
 
-# 阿里云短信服务（短信验证码）— 留空时自动回退为开发控制台输出
-ALI_ACCESS_KEY_ID=
-ALI_ACCESS_KEY_SECRET=
-ALI_SMS_SIGN=
-ALI_SMS_TEMPLATE=
+**2) Redis**（Windows 无官方原生包，用社区 Windows 版）。
+安装：从 https://github.com/tporadowski/redis/releases 下载安装包并安装（会注册为 Windows 服务 `Redis`，监听 `:6379`）。
+
+```powershell
+# 启动 Redis 服务（监听 6379）
+redis-server.exe --service-start
+
+# 停止 Redis 服务（释放 6379 端口）
+redis-server.exe --service-stop
+
+# 查看 6379 端口是否被 Redis 占用
+netstat -ano | findstr 6379
 ```
+
+> 说明：`redis-server.exe` 需在安装目录下执行，或将其加入 PATH。也可用 `Start-Service Redis` / `Stop-Service Redis` 等价管理。
+
+#### 方式 B：Docker Compose（一键，需已安装 Docker）
+
+```bash
+docker compose up -d mysql redis
+docker compose ps          # 确认 mysql / redis 容器均为 Up
+```
+
+`docker-compose.yaml` 会自动创建 `ura_db` 库、`ura_user` / `ura_pass_2026` 用户，启用 `utf8mb4` 字符集；本地端口 MySQL `3306`、Redis `6379`，数据持久化到 Docker volume。
+
+> 本项目的数据库已彻彻底底切换为 MySQL——数据也搬好了，`seed.ts` 即为完整数据集的单一来源，无需再导入任何旧库。当前的服务器部署目标只需一台可远程访问的 MySQL。
+
+### 3. 配置环境变量（.env）
+
+在项目根目录创建 / 修改 `.env`：
+
+| 变量 | 说明 | 示例值 |
+|---|---|---|
+| `DATABASE_URL` | MySQL 连接串，可指向远程服务器 | `mysql://ura_user:ura_pass_2026@localhost:3306/ura_db` |
+| `ADMIN_SECRET` | 管理后台登录共享密钥（自行修改） | `ura-admin-2026` |
+| `REDIS_URL` | Redis 连接 | `redis://localhost:6379` |
+| `ALI_ACCESS_KEY_ID` / `ALI_ACCESS_KEY_SECRET` / `ALI_SMS_SIGN` / `ALI_SMS_TEMPLATE` | 阿里云短信四项，任一为空时回退为控制台输出 | — |
 
 说明：
 
-- `ADMIN_SECRET` 用于管理后台登录，是一个共享密钥，**非生产级安全方案**，仅用于原型演示。
-- `REDIS_URL` 需要本地运行 Redis 服务；短信验证码登录 / 注册依赖 Redis。
-- 阿里云短信四项配置任一为空时，`sendVerificationCode` 会在控制台打印 `[DEV SMS] 验证码 xxx → 手机号`，不实际发送短信，便于本地开发。
+- `ADMIN_SECRET` 是共享密钥，**非生产级安全方案**，仅用于原型演示。
+- `REDIS_URL` 需指向可达的 Redis；短信验证码登录 / 注册依赖 Redis。
+- 阿里云短信四项配置任一为空时，`sendVerificationCode` 在控制台打印 `[DEV SMS] 验证码 xxx → 手机号`，不实际发送短信。
+- 生产部署务必修改 `ADMIN_SECRET` 与数据库密码，并将 `DATABASE_URL` 指向服务器上的 MySQL。
 
-### 3. 启动 Redis（本地开发）
+### 4. 初始化数据库表（生成 / 应用迁移）
 
 ```bash
-# 方式一：本地安装的 Redis
-redis-server
-
-# 方式二：Docker
-docker compose up -d redis
+# 首次或全新库：创建表结构并登记迁移历史
+npx prisma migrate dev
+# 已有库仅补结构（CI / 生产推荐）：npx prisma migrate deploy
 ```
 
-> 项目根目录提供 `docker-compose.yaml`，可一键启动 Redis。
-
-### 4. 初始化数据库
+### 5. 填充演示数据
 
 ```bash
-npx prisma migrate dev --name init
 npx prisma db seed
 ```
 
-种子数据包含 2 个赛事（济南半程马拉松、青岛校园跑）、6 个组别、2 个测试选手账号与 2 条报名记录：
+种子数据复刻了项目实际运行的完整数据集：3 个赛事（济南半程马拉松 / 青岛校园跑 / 临沭马拉松）、8 个组别、3 个选手、2 条报名记录。
+
+
+可直接登录体验的演示账号（密码均为 `123456`）：
 
 | 姓名 | 手机号 | 密码 | URA ID | 学校 | 报名 |
 |---|---|---|---|---|---|
 | 张明 | 13800138001 | 123456 | 13801 | 山东大学 | 济南男半马 · 已支付 |
-| 李婷 | 13800138002 | 123456 | 24917 | 山东师范大学 | 济南女半马 · 待支付 |
+| 李婷 | 13800138002 | 123456 | 24917 | 山东师范大学 | 济南女半马 · 已支付 |
 
-> 注：种子数据中济南半程马拉松状态为 `open`。如需体验完赛证书流程，可将该赛事 `status` 改为 `finished`（通过管理后台或 `npx prisma studio`），随后用张明账号登录，从「我的赛事 → 报名详情」领取完赛证书。
+> 种子数据中济南半程马拉松已是 `finished` 状态，用张明账号登录后从「我的赛事 → 报名详情」即可直接领取完赛证书。
 
-### 5. 启动开发服务器
+### 6. 启动开发服务器
 
 ```bash
 npm run dev
@@ -277,17 +316,28 @@ npm run dev
 
 访问 [http://localhost:3000](http://localhost:3000) 查看效果。
 
-- 管理后台入口：`/admin`，使用 `.env` 中配置的 `ADMIN_SECRET` 登录
-- 选手登录入口：`/runner/login`（验证码登录需 Redis；未配置短信服务时验证码打印在服务端控制台）
+- 管理后台入口：`/admin`，使用 `.env` 中配置的 `ADMIN_SECRET` 登录。
+- 选手登录入口：`/runner/login`（验证码登录需 Redis；未配置短信服务时验证码打印在服务端控制台）。
+
+## 生产部署提示
+
+- 部署目标只需一台可访问的 MySQL。将 `.env` 的 `DATABASE_URL` 改为服务器 MySQL 连接串（如 `mysql://ura_user:xxx@<host>:3306/ura_db`），并放开该账号的远程访问权限即可动态访问。
+- 服务器侧依次执行：`npm install` → `npx prisma migrate deploy` → `npm run build` → `npm start`。
+- Redis 使用托管实例或同机部署，更新 `REDIS_URL`。
+- MySQL 远程账号建议仅授予 `ura_db.*` 权限、使用强密码并启用 TLS / 防火墙白名单。
 
 ## 其他命令
 
 ```bash
-npm run build        # 生产构建
-npm run start        # 启动生产服务器（需先执行 build）
-npm run lint         # 代码检查
-npx prisma studio    # 可视化查看 / 编辑数据库
-npx prisma db push   # 同步 schema 到数据库（不生成迁移文件）
-npx prisma db seed   # 重新填充种子数据
-npx prisma generate  # 重新生成 Prisma Client
+npm run build                          # 生产构建
+npm run start                          # 启动生产服务器（需先 build）
+npm run lint                           # 代码检查
+npx prisma studio                      # 可视化查看 / 编辑数据库
+npx prisma migrate dev --name <name>   # 改 schema 后生成新迁移（开发期）
+npx prisma migrate deploy              # 应用迁移（生产 / CI，非交互）
+npx prisma migrate status              # 查看迁移状态
+npx prisma migrate resolve --applied 20260714000000_init  # 标记某迁移已应用
+npx prisma db push                     # 同步 schema 到数据库（不生成迁移文件）
+npx prisma db seed                     # 重新填充种子数据
+npx prisma generate                    # 重新生成 Prisma Client
 ```

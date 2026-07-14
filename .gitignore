@@ -17,11 +17,7 @@ build/
 .env
 .env*.local
 
-# Database
-prisma/dev.db
-prisma/dev.db-journal
-*.db
-*.db-journal
+# Database (MySQL — schema/migrations tracked in prisma/)
 
 # TypeScript
 next-env.d.ts

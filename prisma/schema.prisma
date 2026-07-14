@@ -3,25 +3,25 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Event {
-  id          String  @id @default(cuid())
-  title       String
-  slug        String  @unique
-  description String
-  city        String
-  location    String
-  bannerUrl   String?
-  logoUrl     String?
+  id          String   @id @default(cuid()) @db.VarChar(30)
+  title       String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(191)
+  description String   @db.Text
+  city        String   @db.VarChar(255)
+  location    String   @db.VarChar(255)
+  bannerUrl   String?  @db.VarChar(512)
+  logoUrl     String?  @db.VarChar(512)
 
   registrationStart DateTime
   registrationEnd   DateTime
   eventDate         DateTime
 
-  status String @default("draft") // draft | open | closed | finished
+  status String @default("draft") @db.VarChar(20) // draft | open | closed | finished
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -31,16 +31,16 @@ model Event {
 }
 
 model Group {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid()) @db.VarChar(30)
+  eventId  String @db.VarChar(30)
+  event    Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
-  name       String
+  name       String  @db.VarChar(255)
   distance   Float
-  startTime  String
-  cutoffTime String
+  startTime  String  @db.VarChar(20)
+  cutoffTime String  @db.VarChar(20)
 
-  gender   String  @default("all") // male | female | all
+  gender   String  @default("all") @db.VarChar(10) // male | female | all
   minAge   Int?
   maxAge   Int?
   capacity Int
@@ -51,21 +51,23 @@ model Group {
   updatedAt DateTime @updatedAt
 
   registrations Registration[]
+
+  @@index([eventId])
 }
 
 model Runner {
-  id       String  @id @default(cuid())
-  phone    String  @unique
-  password String // scrypt-hashed: salt:hash
-  name     String
+  id       String  @id @default(cuid()) @db.VarChar(30)
+  phone    String  @unique @db.VarChar(20)
+  password String  @db.VarChar(255) // scrypt-hashed: salt:hash
+  name     String  @db.VarChar(255)
   uraId    Int?    @unique // 5-digit random URA ID, immutable by user
-  gender   String
-  idCard   String
-  email    String?
-  school   String
-  major    String?
+  gender   String  @db.VarChar(10)
+  idCard   String  @db.VarChar(18)
+  email    String? @db.VarChar(255)
+  school   String  @db.VarChar(255)
+  major    String? @db.VarChar(255)
 
-  sessionToken String? @unique
+  sessionToken String? @unique @db.VarChar(191)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,31 +76,34 @@ model Runner {
 }
 
 model Registration {
-  id      String @id @default(cuid())
-  eventId String
+  id      String @id @default(cuid()) @db.VarChar(30)
+  eventId String @db.VarChar(30)
   event   Event  @relation(fields: [eventId], references: [id])
 
-  groupId String
+  groupId String @db.VarChar(30)
   group   Group  @relation(fields: [groupId], references: [id])
 
-  name   String
-  gender String
-  idCard String
-  phone  String
-  email  String?
-  school String
-  major  String?
+  name   String @db.VarChar(255)
+  gender String @db.VarChar(10)
+  idCard String @db.VarChar(18)
+  phone  String @db.VarChar(20)
+  email  String? @db.VarChar(255)
+  school String @db.VarChar(255)
+  major  String? @db.VarChar(255)
 
-  runnerId String?
+  runnerId String? @db.VarChar(30)
   runner   Runner? @relation(fields: [runnerId], references: [id])
 
-  emergencyContact String
-  emergencyPhone   String
+  emergencyContact String @db.VarChar(255)
+  emergencyPhone   String @db.VarChar(20)
 
-  status String @default("pending_payment") // pending_payment | paid | cancelled
+  status String @default("pending_payment") @db.VarChar(20) // pending_payment | paid | cancelled
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([eventId, groupId, idCard])
+  @@index([eventId])
+  @@index([groupId])
+  @@index([idCard, phone])
 }

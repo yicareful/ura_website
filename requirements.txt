@@ -1,0 +1,26 @@
+# URA —— 系统环境依赖清单（requirements.txt）
+# 在全新机器上按顺序安装；也可跳过 MySQL/Redis 改用 docker-compose.yaml 托管。
+# npm 项目依赖（Next.js / Prisma / ioredis 等）在项目根目录执行 `npm install` 安装，见 package.json。
+
+# 1) Node.js >= 20（推荐 20 LTS / 22 LTS，随附 npm 10+）
+#    Windows: winget install OpenJS.NodeJS.LTS   |  https://nodejs.org
+#    macOS:   brew install node@22
+#    Ubuntu:  见 https://github.com/nodesource/distributions
+nodejs>=20
+
+# 2) MySQL 8.0 / 8.4 / 9.x，utf8mb4 字符集（用于远程访问的持久化数据库）
+#    Windows: winget install Oracle.MySQL  |  https://dev.mysql.com/downloads
+#    macOS:   brew install mysql
+#    Ubuntu:  sudo apt install mysql-server
+mysql>=8
+
+# 3) Redis >= 6（推荐 7；用于短信验证码存取 / 频率限制 / 注册临时令牌）
+#    Windows: 从 https://github.com/tporadowski/redis/releases 下载安装（注册为 Windows 服务）
+#             启动 redis-server.exe --service-start   停止 redis-server.exe --service-stop   查端口 netstat -ano | findstr 6379
+#    macOS:   brew install redis
+#    Ubuntu:  sudo apt install redis-server
+redis>=6
+
+# 4) Docker & Docker Compose（可选，一键托管 MySQL + Redis，见根目录 docker-compose.yaml）
+#    https://docs.docker.com/get-docker  +  https://docs.docker.com/compose/install
+docker>=20   ; optional
