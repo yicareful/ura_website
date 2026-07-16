@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { NEWS_ARTICLES, type NewsParagraph } from "./src/lib/news-data";
 
 const prisma = new PrismaClient();
 
@@ -102,12 +103,12 @@ async function main() {
     },
   });
 
-  async function findGroup(eventSlug, groupName) {
+  async function findGroup(eventSlug: string, groupName: string) {
     const g = await prisma.group.findFirst({ where: { event: { slug: eventSlug }, name: groupName } });
     if (!g) throw new Error(`Group not found: ${eventSlug} / ${groupName}`);
     return g;
   }
-  async function findRunnerByPhone(phone) {
+  async function findRunnerByPhone(phone: string) {
     return prisma.runner.findUnique({ where: { phone } });
   }
 
@@ -151,6 +152,50 @@ async function main() {
     },
   });
 
+  // ---- Articles (convert mock news to markdown) ----
+  await prisma.article.deleteMany();
+
+  function paragraphToMd(block: NewsParagraph): string {
+    switch (block.type) {
+      case "p":
+        return block.text;
+      case "h":
+        return `## ${block.text}`;
+      case "quote":
+        return `> ${block.text}${block.cite ? `\n> —— ${block.cite}` : ""}`;
+      case "list":
+        return block.items.map((it) => `- ${it}`).join("\n");
+      case "data": {
+        const header = `| ${block.rows.map((r) => r.label).join(" | ")} |`;
+        const sep = `| ${block.rows.map(() => "---").join(" | ")} |`;
+        const row = `| ${block.rows.map((r) => r.value).join(" | ")} |`;
+        return `${header}\n${sep}\n${row}`;
+      }
+      default:
+        return "";
+    }
+  }
+
+  for (const a of NEWS_ARTICLES) {
+    const content = a.body.map(paragraphToMd).join("\n\n");
+    await prisma.article.create({
+      data: {
+        slug: a.slug,
+        title: a.title,
+        subtitle: a.subtitle ?? null,
+        category: a.category,
+        author: a.author ?? null,
+        excerpt: a.excerpt,
+        coverTag: a.cover.tag ?? null,
+        coverMeta: a.cover.meta ?? null,
+        content,
+        status: "published",
+        featured: a.featured ?? false,
+        readMinutes: a.readMinutes,
+        publishedAt: new Date(a.date),
+      },
+    });
+  }
   console.log("Seed 完成: 3 个赛事, 8 个组别, 3 个选手, 2 条报名记录");
 }
 

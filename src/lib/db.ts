@@ -93,3 +93,55 @@ export function getEventRegistrations(eventId: string) {
     orderBy: { createdAt: "desc" },
   });
 }
+
+// ---- Article queries ----
+
+export function getPublishedArticles(category?: string) {
+  return prisma.article.findMany({
+    where: {
+      status: "published",
+      ...(category ? { category } : {}),
+    },
+    orderBy: { publishedAt: "desc" },
+  });
+}
+
+export function getFeaturedPublishedArticles(limit = 3) {
+  return prisma.article.findMany({
+    where: { status: "published", featured: true },
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+  });
+}
+
+export function getLatestPublishedArticles(limit = 6) {
+  return prisma.article.findMany({
+    where: { status: "published" },
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+  });
+}
+
+export function getPublishedArticleBySlug(slug: string) {
+  return prisma.article.findFirst({
+    where: { slug, status: "published" },
+  });
+}
+
+export function getArticlesForAdmin() {
+  return prisma.article.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export function getArticleById(id: string) {
+  return prisma.article.findUnique({ where: { id } });
+}
+
+export function getPublishedArticlesByCategory(category: string, excludeSlug?: string, limit = 4) {
+  return prisma.article.findMany({
+    where: { status: "published", category, ...(excludeSlug ? { slug: { not: excludeSlug } } : {}) },
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+  });
+}

@@ -32,3 +32,19 @@ export const GENDER_LABEL: Record<string, string> = {
 
 export const ADMIN_SESSION_COOKIE = "ura_admin_session";
 export const RUNNER_SESSION_COOKIE = "ura_runner_session";
+
+export const ARTICLE_STATUS = {
+  DRAFT: "draft",
+  PUBLISHED: "published",
+} as const;
+
+export const ARTICLE_STATUS_LABEL: Record<string, string> = {
+  draft: "草稿",
+  published: "已发布",
+};
+
+export const ARTICLE_CATEGORY_LABEL: Record<string, string> = {
+  platform: "平台动态",
+  interview: "专访",
+  race: "赛事资讯",
+};

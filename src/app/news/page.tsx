@@ -1,18 +1,10 @@
 ﻿import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
-import {
-  NEWS_ARTICLES,
-  NEWS_CATEGORIES,
-  type NewsCategory,
-} from "@/lib/news-data";
+import { getPublishedArticles } from "@/lib/db";
+import { NEWS_CATEGORIES, type NewsCategory } from "@/lib/news-data";
+import { formatDate } from "@/lib/format";
 
-function formatDate(iso: string): string {
-  return new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(iso));
-}
+export const dynamic = "force-dynamic";
 
 export default async function NewsPage({
   searchParams,
@@ -23,12 +15,10 @@ export default async function NewsPage({
   const activeCat = (sp.cat as NewsCategory) || undefined;
   const validCat = activeCat && NEWS_CATEGORIES.some((c) => c.id === activeCat) ? activeCat : undefined;
 
-  const articles = validCat
-    ? NEWS_ARTICLES.filter((a) => a.category === validCat)
-    : NEWS_ARTICLES;
-
-  // newest first
-  const sorted = [...articles].sort((a, b) => +new Date(b.date) - +new Date(a.date));
+  const articles = await getPublishedArticles(validCat);
+  const sorted = [...articles].sort(
+    (a, b) => +(b.publishedAt ?? b.createdAt) - +(a.publishedAt ?? a.createdAt)
+  );
 
   return (
     <>
@@ -175,7 +165,7 @@ export default async function NewsPage({
                           letterSpacing: ".04em",
                         }}
                       >
-                        <span>{formatDate(article.date)}</span>
+                        <span>{formatDate(article.publishedAt ?? article.createdAt)}</span>
                         <span aria-hidden>·</span>
                         <span>{article.readMinutes} 分钟阅读</span>
                         {article.author && (

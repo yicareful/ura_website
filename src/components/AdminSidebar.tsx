@@ -4,6 +4,7 @@ import { adminLogout } from "@/app/admin/login/actions";
 const NAV_ITEMS = [
   { href: "/admin", label: "仪表盘" },
   { href: "/admin/events", label: "赛事管理" },
+  { href: "/admin/articles", label: "文章管理" },
 ];
 
 export function AdminSidebar() {
@@ -81,3 +82,4 @@ export function AdminSidebar() {
     </aside>
   );
 }
+

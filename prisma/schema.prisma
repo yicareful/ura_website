@@ -107,3 +107,25 @@ model Registration {
   @@index([groupId])
   @@index([idCard, phone])
 }
+model Article {
+  id          String   @id @default(cuid()) @db.VarChar(30)
+  slug        String   @unique @db.VarChar(191)
+  title       String   @db.VarChar(255)
+  subtitle    String?  @db.VarChar(255)
+  category    String   @db.VarChar(20) // platform | interview | race
+  author      String?  @db.VarChar(255)
+  excerpt     String   @db.Text
+  coverTag    String?  @db.VarChar(191)
+  coverMeta   String?  @db.VarChar(191)
+  coverUrl    String?  @db.VarChar(512)
+  content     String   @db.LongText // markdown source
+  status      String   @default("draft") @db.VarChar(20) // draft | published
+  featured    Boolean  @default(false)
+  readMinutes Int      @default(3)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category, status])
+  @@index([status, publishedAt])
+}

@@ -1,74 +1,31 @@
 ﻿import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/SiteHeader";
-import {
-  NEWS_ARTICLES,
-  NEWS_CATEGORIES,
-  getArticleBySlug,
-  getArticlesByCategory,
-  type NewsParagraph,
-} from "@/lib/news-data";
+import { getPublishedArticleBySlug, getPublishedArticlesByCategory } from "@/lib/db";
+import { NEWS_CATEGORIES } from "@/lib/news-data";
+import { renderMarkdown } from "@/lib/markdown";
+import { formatDate } from "@/lib/format";
 
-export function generateStaticParams() {
-  return NEWS_ARTICLES.map((a) => ({ slug: a.slug }));
-}
+export const dynamic = "force-dynamic";
 
-function formatDate(iso: string): string {
+function formatDateFull(date: Date) {
   return new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",
     month: "long",
     day: "numeric",
     weekday: "long",
-  }).format(new Date(iso));
-}
-
-function Paragraph({ block }: { block: NewsParagraph }) {
-  switch (block.type) {
-    case "p":
-      return <p className="article-body__p">{block.text}</p>;
-    case "h":
-      return <h3 className="article-body__h">{block.text}</h3>;
-    case "quote":
-      return (
-        <blockquote className="article-body__quote">
-          <span aria-hidden className="article-body__quote-mark">&ldquo;</span>
-          <p>{block.text}</p>
-          {block.cite && <cite>—— {block.cite}</cite>}
-        </blockquote>
-      );
-    case "list":
-      return (
-        <ul className="article-body__list">
-          {block.items.map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
-        </ul>
-      );
-    case "data":
-      return (
-        <dl className="article-body__data">
-          {block.rows.map((row, i) => (
-            <div className="article-body__data-row" key={i}>
-              <dt>{row.label}</dt>
-              <dd>{row.value}</dd>
-            </div>
-          ))}
-        </dl>
-      );
-    default:
-      return null;
-  }
+  }).format(date);
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getPublishedArticleBySlug(slug);
   if (!article) notFound();
 
   const cat = NEWS_CATEGORIES.find((c) => c.id === article.category)!;
-  const related = getArticlesByCategory(article.category)
-    .filter((a) => a.slug !== article.slug)
-    .slice(0, 2);
+  const related = await getPublishedArticlesByCategory(article.category, article.slug, 2);
+  const html = renderMarkdown(article.content);
+  const date = article.publishedAt ?? article.createdAt;
 
   return (
     <>
@@ -94,7 +51,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               {cat.label} / {cat.labelEn}
             </span>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", color: "var(--color-text-on-dark-muted)", letterSpacing: ".04em" }}>
-              {formatDate(article.date)}
+              {formatDateFull(date)}
             </span>
           </div>
 
@@ -130,14 +87,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
+      {/* cover image */}
+      {article.coverUrl && (
+        <section className="section-light" style={{ padding: "var(--space-12) 0 0" }}>
+          <div className="container" style={{ maxWidth: 880 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={article.coverUrl}
+              alt={article.title}
+              style={{ width: "100%", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border)" }}
+            />
+          </div>
+        </section>
+      )}
+
       {/* body */}
       <section className="section-light" style={{ padding: "var(--space-16) 0 var(--space-24)" }}>
         <div className="container" style={{ maxWidth: 760 }}>
-          <article className="article-body">
-            {article.body.map((block, i) => (
-              <Paragraph key={i} block={block} />
-            ))}
-          </article>
+          <article className="md-body" dangerouslySetInnerHTML={{ __html: html }} />
 
           {/* back to news */}
           <div style={{ marginTop: "var(--space-16)", paddingTop: "var(--space-8)", borderTop: "1px dashed var(--color-border-strong)", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "var(--space-4)", flexWrap: "wrap" }}>
